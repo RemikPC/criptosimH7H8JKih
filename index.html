@@ -6996,32 +6996,72 @@ function updateMaxBet() {
 
 // Выполнение конвертации
 // Выполнение конвертации - ИСПРАВЛЕНА ОШИБКА С ОКРУГЛЕНИЕМ
+// Выполнение конвертации - ИСПРАВЛЕННАЯ ВЕРСИЯ С ТОЧНОЙ АРИФМЕТИКОЙ
+
+// Точная функция для вычитания
+function preciseSubtract(a, b) {
+    const multiplier = Math.pow(10, 8);
+    const result = (a * multiplier - b * multiplier) / multiplier;
+    return parseFloat(result.toFixed(8));
+}
+
+// Точная функция для сложения
+function preciseAdd(a, b) {
+    const multiplier = Math.pow(10, 8);
+    const result = (a * multiplier + b * multiplier) / multiplier;
+    return parseFloat(result.toFixed(8));
+}
+
+// Точная функция для умножения
+function preciseMultiply(a, b) {
+    const multiplier = Math.pow(10, 8);
+    const result = (a * multiplier) * (b * multiplier) / (multiplier * multiplier);
+    return parseFloat(result.toFixed(8));
+}
+
 function performConversion() {
     const fromCurrency = document.getElementById('from-currency').value;
     const toCurrency = document.getElementById('to-currency').value;
-    let amount = parseFloat(document.getElementById('conversion-amount').value);
+    let amount = document.getElementById('conversion-amount').value;
     
-    // Валидация с исправлением
-    if (!amount || amount <= 0 || isNaN(amount)) {
+    console.log('Начало конвертации:', { fromCurrency, toCurrency, amount });
+    
+    // ===== 1. ВАЛИДАЦИЯ ВХОДНЫХ ДАННЫХ =====
+    // Преобразуем в число с учетом запятых и точек
+    amount = parseFloat(amount.replace(',', '.'));
+    
+    if (isNaN(amount) || amount <= 0) {
         showNotification('Введите корректную сумму для конвертации', 'error');
         return;
     }
     
-    // Округляем для STARS и CAT
+    // Для STARS и CAT - только целые числа
     if (fromCurrency === 'STARS' || fromCurrency === 'CAT') {
         amount = Math.floor(amount);
+        if (amount <= 0) {
+            showNotification('Для STARS и CAT только целые числа', 'error');
+            return;
+        }
     }
     
-    // Используем точную проверку с epsilon для плавающих чисел
-    const epsilon = 0.000001;
-    const availableBalance = parseFloat(state.balances[fromCurrency]);
+    // ===== 2. ПРОВЕРКА БАЛАНСА С ЗАПАСОМ =====
+    const availableBalance = parseFloat(state.balances[fromCurrency].toFixed(8));
+    const amountToCheck = parseFloat(amount.toFixed(8));
     
-    if (amount > availableBalance + epsilon) {
-        showNotification('Недостаточно средств для конвертации', 'error');
+    console.log('Проверка баланса:', {
+        availableBalance,
+        amountToCheck,
+        fromCurrency,
+        balance: state.balances[fromCurrency]
+    });
+    
+    // Используем запас в 0.000001 для плавающих чисел
+    if (amountToCheck > availableBalance + 0.000001) {
+        showNotification(`Недостаточно средств. Доступно: ${formatNumber(availableBalance, 8)} ${fromCurrency}`, 'error');
         return;
     }
     
-    // Особые правила для STARS и CAT
+    // ===== 3. ПРОВЕРКА ОСОБЫХ ПРАВИЛ =====
     if (fromCurrency === 'STARS' && toCurrency !== 'RUB') {
         showNotification('STARS можно конвертировать только в RUB', 'error');
         return;
@@ -7042,14 +7082,14 @@ function performConversion() {
         return;
     }
     
-    // Проверка листинга CAT
     if ((fromCurrency === 'CAT' || toCurrency === 'CAT') && !systemSettings.catcoinListed) {
         showNotification('Catcoin не в листинге. Конвертация недоступна.', 'error');
         return;
     }
     
-    // Расчет результата с точным округлением
-    let rate;
+    // ===== 4. РАСЧЕТ КУРСА И РЕЗУЛЬТАТА =====
+    let rate = 1;
+    
     if (fromCurrency === 'RUB') {
         rate = 1 / state.exchangeRates[toCurrency];
     } else if (toCurrency === 'RUB') {
@@ -7066,60 +7106,114 @@ function performConversion() {
         rate = state.exchangeRates[fromCurrency] / state.exchangeRates[toCurrency];
     }
     
-    // Расчет комиссии (2%)
-    const fee = parseFloat((amount * 0.02).toFixed(8)); // Округляем до 8 знаков
-    const amountAfterFee = parseFloat((amount - fee).toFixed(8)); // Округляем до 8 знаков
+    // Расчет комиссии (2%) с округлением до 8 знаков
+    const fee = parseFloat((amount * 0.02).toFixed(8));
+    const amountAfterFee = parseFloat((amount - fee).toFixed(8));
     let result = parseFloat((amountAfterFee * rate).toFixed(8));
     
-    // Для STARS и CAT округляем до целого числа
+    // Для STARS и CAT округляем до целого числа вниз
     if (toCurrency === 'STARS' || toCurrency === 'CAT') {
         result = Math.floor(result);
+        if (result <= 0) {
+            showNotification('Результат конвертации слишком мал', 'error');
+            return;
+        }
     }
     
-    // Дополнительная проверка после расчета
-    if (amount > state.balances[fromCurrency] + 0.000001) {
-        showNotification('Недостаточно средств для конвертации', 'error');
+    // ===== 5. ФИНАЛЬНАЯ ПРОВЕРКА БАЛАНСА =====
+    // Округляем до 8 знаков для точного сравнения
+    const finalAmount = parseFloat(amount.toFixed(8));
+    const finalBalance = parseFloat(state.balances[fromCurrency].toFixed(8));
+    
+    if (finalAmount > finalBalance) {
+        showNotification(`Недостаточно средств. Финальная проверка: ${formatNumber(finalBalance, 8)} ${fromCurrency}`, 'error');
         return;
     }
     
-    showConfirmModal(
-        `Вы уверены, что хотите конвертировать ${fromCurrency === 'STARS' || fromCurrency === 'CAT' ? Math.floor(amount) : formatNumber(amount, 6)} ${fromCurrency} в ${toCurrency === 'STARS' || toCurrency === 'CAT' ? Math.floor(result) : formatNumber(result, 6)} ${toCurrency}? Комиссия: ${formatNumber(fee, 6)} ${fromCurrency}`,
-        () => {
-            // Выполнение конвертации с безопасным вычитанием
-            state.balances[fromCurrency] = parseFloat((state.balances[fromCurrency] - amount).toFixed(8));
+    console.log('Расчет конвертации:', {
+        amount: finalAmount,
+        fee,
+        amountAfterFee,
+        rate,
+        result,
+        fromBalance: state.balances[fromCurrency],
+        toBalance: state.balances[toCurrency]
+    });
+    
+    // ===== 6. ПОДТВЕРЖДЕНИЕ ОПЕРАЦИИ =====
+    const confirmMessage = `Вы уверены, что хотите конвертировать ${fromCurrency === 'STARS' || fromCurrency === 'CAT' ? Math.floor(amount) : formatNumber(amount, 6)} ${fromCurrency} в ${toCurrency === 'STARS' || toCurrency === 'CAT' ? Math.floor(result) : formatNumber(result, 6)} ${toCurrency}? Комиссия: ${formatNumber(fee, 6)} ${fromCurrency}`;
+    
+    showConfirmModal(confirmMessage, () => {
+        console.log('Начинаем выполнение конвертации...');
+        
+        // ===== 7. ВЫПОЛНЕНИЕ КОНВЕРТАЦИИ С ТОЧНОЙ АРИФМЕТИКОЙ =====
+        try {
+            // 7.1. Вычитаем сумму с округлением до 8 знаков
+            const oldFromBalance = parseFloat(state.balances[fromCurrency].toFixed(8));
+            const newFromBalance = parseFloat((oldFromBalance - finalAmount).toFixed(8));
             
-            if (toCurrency === 'STARS' || toCurrency === 'CAT') {
-                state.balances[toCurrency] += Math.floor(result);
-            } else {
-                state.balances[toCurrency] = parseFloat((state.balances[toCurrency] + result).toFixed(8));
+            console.log('Вычитаем:', {
+                old: oldFromBalance,
+                amount: finalAmount,
+                new: newFromBalance
+            });
+            
+            // Проверяем, чтобы баланс не ушел в минус
+            if (newFromBalance < -0.000001) {
+                showNotification('Ошибка: баланс не может быть отрицательным', 'error');
+                return;
             }
             
-            // Комиссия отправляется администратору
+            state.balances[fromCurrency] = Math.max(0, newFromBalance);
+            
+            // 7.2. Добавляем результат
+            const oldToBalance = parseFloat(state.balances[toCurrency].toFixed(8));
+            const newToBalance = parseFloat((oldToBalance + result).toFixed(8));
+            
+            console.log('Добавляем:', {
+                old: oldToBalance,
+                result: result,
+                new: newToBalance
+            });
+            
+            state.balances[toCurrency] = newToBalance;
+            
+            // 7.3. Обработка комиссии
             if (state.isAdmin) {
-                // Если конвертирует администратор, комиссия остается у него
-                state.balances[fromCurrency] = parseFloat((state.balances[fromCurrency] + fee).toFixed(8));
+                // Администратору комиссия возвращается
+                const adminBonus = parseFloat((state.balances[fromCurrency] + fee).toFixed(8));
+                state.balances[fromCurrency] = adminBonus;
             } else {
-                // Комиссия переводится на счет администратора
-                systemSettings.adminCommission = parseFloat((systemSettings.adminCommission + fee * state.exchangeRates[fromCurrency]).toFixed(2));
+                // Обычному пользователю комиссия уходит администратору
+                const commissionInRub = parseFloat((fee * (state.exchangeRates[fromCurrency] || 1)).toFixed(2));
+                systemSettings.adminCommission = parseFloat((systemSettings.adminCommission + commissionInRub).toFixed(2));
                 saveSystemSettings();
             }
             
-            // Добавление в историю транзакций
-            addTransaction('conversion', `${fromCurrency}→${toCurrency}`, -amount, toCurrency === 'STARS' || toCurrency === 'CAT' ? Math.floor(result) : result);
+            // 7.4. Добавляем в историю
+            addTransaction('conversion', `${fromCurrency}→${toCurrency}`, -finalAmount, result);
             
-            // Сохранение состояния
+            // 7.5. Сохраняем данные
             saveUserData();
             
-            // Обновление UI
+            // 7.6. Обновляем UI
             updateUI();
             
-            // Сброс формы
+            // 7.7. Сбрасываем форму
             document.getElementById('conversion-amount').value = '';
             updateConversionResult();
             
-            showNotification('Конвертация выполнена успешно', 'success');
+            // 7.8. Показываем уведомление
+            const successMessage = `Успешно конвертировано ${formatNumber(finalAmount, 6)} ${fromCurrency} в ${formatNumber(result, 6)} ${toCurrency}`;
+            showNotification(successMessage, 'success');
+            
+            console.log('Конвертация успешно завершена');
+            
+        } catch (error) {
+            console.error('Критическая ошибка при конвертации:', error);
+            showNotification('Произошла ошибка при конвертации. Операция отменена.', 'error');
         }
-    );
+    });
 }
 
         // Пополнение счета
@@ -7638,13 +7732,15 @@ currencyOptions.forEach(option => {
 
         // Форматирование чисел
 // Форматирование чисел с исправлением
+// Форматирование чисел с безопасным округлением
 function formatNumber(num, decimals = 2) {
     if (isNaN(num)) return '0';
     
-    // Округляем перед форматированием
-    const roundedNum = parseFloat(num.toFixed(decimals));
+    // Сначала округляем до нужного количества знаков
+    const rounded = parseFloat(num.toFixed(decimals));
     
-    return roundedNum.toLocaleString('ru-RU', {
+    // Затем форматируем
+    return rounded.toLocaleString('ru-RU', {
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals
     });
