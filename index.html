@@ -2826,8 +2826,8 @@ function destroyAllStockCharts() {
                 history: [],
                 graphPoints: [],
                 gameInterval: null,
-                instantCrashChance: 0.1, // 5% шанс моментального краша
-                earlyCrashChance: 0.5, // 25% шанс краша до 2x
+                instantCrashChance: 0.5, // 5% шанс моментального краша
+                earlyCrashChance: 0.3, // 25% шанс краша до 2x
                 maxMultiplier: 10.0
             },
             // Состояние улучшения NFT
@@ -3126,9 +3126,9 @@ function updateSlotsNFTSelector() {
             const results = [];
             for (let i = 0; i < 3; i++) {
                 // Увеличиваем шанс выигрыша в режиме удачи
-                let winChance = 0.15; // 15% шанс на удачный символ
+                let winChance = 0.25; // 15% шанс на удачный символ
                 if (systemSettings.doubleLuckMode) {
-                    winChance = 0.3; // 30% в режиме удачи
+                    winChance = 0.5; // 30% в режиме удачи
                 }
                 
                 if (Math.random() < winChance) {
