@@ -1725,6 +1725,13 @@
     animation: none !important;
     transition: none !important;
 }
+
+/* Добавьте в CSS */
+.currency-option.disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
     </style>
 </head>
 <body>
@@ -6442,17 +6449,15 @@ function initTradeTab() {
 }
 
 // Инициализация селектора валют
+// В функции initializeCurrencySelector() добавьте проверку:
 function initializeCurrencySelector() {
     if (!currencyOptions || currencyOptions.length === 0) {
         console.warn('currencyOptions пуст, пропускаем инициализацию селектора');
         return;
     }
     
-    console.log('Инициализируем селектор валют для', state.currentCurrency);
-    
     currencyOptions.forEach((option, index) => {
         const currency = option.getAttribute('data-currency');
-        console.log(`Валюта ${index}: ${currency}`);
         
         // Устанавливаем активный класс
         if (currency === state.currentCurrency) {
@@ -6466,8 +6471,13 @@ function initializeCurrencySelector() {
             e.preventDefault();
             e.stopPropagation();
             
+            // БЛОКИРОВКА: если идет торговля, нельзя менять валюту
+            if (state.isTrading) {
+                showNotification('Нельзя менять валюту во время торговли!', 'warning');
+                return;
+            }
+            
             const clickedCurrency = this.getAttribute('data-currency');
-            console.log('Нажата валюта:', clickedCurrency);
             
             if (state.currentCurrency !== clickedCurrency) {
                 switchToCurrency(clickedCurrency);
@@ -6475,24 +6485,37 @@ function initializeCurrencySelector() {
         });
     });
 }
-
 // Переключение валюты
+// В функции switchToCurrency() добавьте вызов:
+// В функции switchToCurrency() добавьте:
+// Переключение валюты с проверкой
 function switchToCurrency(newCurrency) {
+    // Проверяем, не идет ли торговля
+    if (state.isTrading) {
+        showNotification('Завершите текущую торговлю перед сменой валюты!', 'warning');
+        return;
+    }
+    
     console.log('Переключаем валюту с', state.currentCurrency, 'на', newCurrency);
     
-    // 1. Обновляем состояние
+    // Обновляем состояние
     state.currentCurrency = newCurrency;
     
-    // 2. Обновляем UI
+    // Обновляем UI
     updateCurrencyUI();
     
-    // 3. Пересоздаем график
+    // Очищаем поле ввода
+    const betAmountInput = document.getElementById('bet-amount');
+    if (betAmountInput) {
+        betAmountInput.value = '';
+    }
+    
+    // Пересоздаем график
     recreateChart();
     
-    // 4. Обновляем максимальную ставку
+    // Обновляем максимальную ставку
     updateMaxBet();
     
-    // Сохраняем данные
     saveUserData();
 }
 
@@ -6570,24 +6593,104 @@ function initializeTradeButtons() {
 }
 
 // Инициализация поля ввода ставки
+// В функции initializeBetInput() добавьте:
+// Инициализация поля ввода ставки - ПОЛНОСТЬЮ ПЕРЕПИСАНА
 function initializeBetInput() {
     const betAmountInput = document.getElementById('bet-amount');
     
-    if (betAmountInput) {
-        console.log('Поле ввода ставки найдено');
-        
-        betAmountInput.addEventListener('input', function() {
-            console.log('Изменена ставка:', this.value);
-            updateMaxBet();
-        });
-        
-        betAmountInput.addEventListener('change', function() {
-            console.log('Ставка изменена:', this.value);
-            updateMaxBet();
-        });
+    if (!betAmountInput) {
+        console.error('Поле ввода ставки не найдено!');
+        return;
     }
     
-    // Первоначальное обновление
+    console.log('Инициализация поля ввода ставки');
+    
+    // 1. Полностью сбрасываем все атрибуты
+    betAmountInput.removeAttribute('min');
+    betAmountInput.removeAttribute('max');
+    betAmountInput.removeAttribute('step');
+    
+    // 2. Устанавливаем базовые атрибуты
+    betAmountInput.setAttribute('step', 'any'); // Любой шаг
+    betAmountInput.value = ''; // Очищаем значение
+    
+    // 3. Обработчик ввода с динамической проверкой
+    betAmountInput.addEventListener('input', function() {
+        const value = this.value;
+        console.log('Ввод ставки:', value);
+        
+        if (!value || value === '') {
+            return;
+        }
+        
+        const numValue = parseFloat(value);
+        
+        if (isNaN(numValue)) {
+            this.value = '';
+            return;
+        }
+        
+        // Проверка минимума
+        if (numValue < 0.001) {
+            this.value = '0.001';
+            return;
+        }
+        
+        // Проверка максимума (динамическая)
+        const currency = state.currentCurrency;
+        const balance = parseFloat(state.balances[currency]) || 0;
+        
+        if (numValue > balance) {
+            this.value = balance.toFixed(6);
+            return;
+        }
+        
+        // Ограничиваем 6 знаками после запятой
+        const fixedValue = parseFloat(numValue.toFixed(6));
+        if (numValue !== fixedValue) {
+            this.value = fixedValue;
+        }
+    });
+    
+    // 4. Обработчик изменения (когда поле теряет фокус)
+    betAmountInput.addEventListener('change', function() {
+        console.log('Изменение ставки:', this.value);
+        
+        const value = this.value;
+        if (!value) return;
+        
+        const numValue = parseFloat(value);
+        
+        if (isNaN(numValue)) {
+            this.value = '';
+            return;
+        }
+        
+        // Принудительная проверка при потере фокуса
+        if (numValue < 0.001) {
+            this.value = '0.001';
+        }
+        
+        const currency = state.currentCurrency;
+        const balance = parseFloat(state.balances[currency]) || 0;
+        
+        if (numValue > balance) {
+            this.value = balance.toFixed(6);
+        }
+    });
+    
+    // 5. Обработчик вставки
+    betAmountInput.addEventListener('paste', function(e) {
+        e.preventDefault();
+        const pastedText = e.clipboardData.getData('text');
+        const numValue = parseFloat(pastedText);
+        
+        if (!isNaN(numValue) && numValue >= 0.001) {
+            this.value = numValue;
+        }
+    });
+    
+    // 6. Первоначальное обновление
     updateMaxBet();
 }
 
@@ -6768,138 +6871,183 @@ function initTradeButtons() {
 
         // Обновление максимальной ставки
 // Обновление максимальной ставки с проверками
+// Обновление максимальной ставки - ВЕРНУЛ КАК БЫЛО
+// Обновление максимальной ставки - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// Обновление максимальной ставки - УПРОЩЕННАЯ
 function updateMaxBet() {
-    try {
-        const currency = state.currentCurrency || 'BTC';
-        const balance = state.balances[currency] || 0;
-        const maxBet = Math.min(balance, 1);
-        
-        const maxBetElement = document.getElementById('max-bet');
-        const betAmountInput = document.getElementById('bet-amount');
-        
-        console.log(`Обновление maxBet: валюта=${currency}, баланс=${balance}, maxBet=${maxBet}`);
-        
-        if (maxBetElement) {
-            maxBetElement.textContent = formatNumber(maxBet, 6);
-        } else {
-            console.warn('Элемент max-bet не найден');
-        }
-        
-        if (betAmountInput) {
-            betAmountInput.max = maxBet;
-            betAmountInput.placeholder = `Макс: ${formatNumber(maxBet, 6)}`;
-            
-            // Проверяем текущее значение
-            const currentValue = parseFloat(betAmountInput.value);
-            if (currentValue > maxBet) {
-                betAmountInput.value = maxBet;
-            }
-        } else {
-            console.warn('Поле ввода ставки не найдено');
-        }
-    } catch (error) {
-        console.error('Ошибка в updateMaxBet:', error);
+    const currency = state.currentCurrency;
+    const balance = parseFloat(state.balances[currency]) || 0;
+    
+    const maxBetElement = document.getElementById('max-bet');
+    if (maxBetElement) {
+        maxBetElement.textContent = formatNumber(balance, 6);
     }
+    
+    console.log(`Максимальная ставка для ${currency}: ${balance}`);
 }
 
         // Размещение ставки
-        function placeBet(direction) {
-            const amount = parseFloat(document.getElementById('bet-amount').value);
-            
-            if (!amount || amount <= 0) {
-                showNotification('Введите корректную сумму ставки', 'error');
-                return;
-            }
-            
-            if (amount > state.balances[state.currentCurrency]) {
-                showNotification('Недостаточно средств для ставки', 'error');
-                return;
-            }
-            
-            if (amount < 0.001) {
-                showNotification('Минимальная ставка: 0.001', 'error');
-                return;
-            }
-            
-            state.isTrading = true;
-            state.betAmount = amount;
-            state.betDirection = direction;
-            
-            document.getElementById('btn-up').disabled = true;
-            document.getElementById('btn-down').disabled = true;
-            document.getElementById('bet-amount').disabled = true;
-            
-            startCountdown();
-        }
+// Размещение ставки - ВЕРНУЛ КАК БЫЛО
+// Размещение ставки - С ДОПОЛНИТЕЛЬНОЙ ПРОВЕРКОЙ
+// Размещение ставки - ПРОСТАЯ ПРОВЕРКА
+// Размещение ставки - С БЛОКИРОВКОЙ СМЕНЫ ВАЛЮТЫ
+function placeBet(direction) {
+    const betAmountInput = document.getElementById('bet-amount');
+    const value = betAmountInput.value;
+    
+    if (!value || value.trim() === '') {
+        showNotification('Введите сумму ставки', 'error');
+        betAmountInput.focus();
+        return;
+    }
+    
+    const amount = parseFloat(value);
+    
+    if (isNaN(amount) || amount <= 0) {
+        showNotification('Введите корректную сумму ставки', 'error');
+        betAmountInput.focus();
+        return;
+    }
+    
+    if (amount < 0.001) {
+        showNotification('Минимальная ставка: 0.001', 'error');
+        betAmountInput.value = '0.001';
+        betAmountInput.focus();
+        return;
+    }
+    
+    const currency = state.currentCurrency;
+    const balance = parseFloat(state.balances[currency]) || 0;
+    
+    if (amount > balance) {
+        showNotification(`Недостаточно средств. Доступно: ${formatNumber(balance, 6)} ${currency}`, 'error');
+        betAmountInput.value = balance.toFixed(6);
+        betAmountInput.focus();
+        return;
+    }
+    
+    console.log(`Ставка размещена: ${amount} ${currency}, направление: ${direction}`);
+    
+    // 1. Начинаем торговлю
+    state.isTrading = true;
+    state.betAmount = amount;
+    state.betDirection = direction;
+    state.betCurrency = currency; // ЗАПОМИНАЕМ ВАЛЮТУ СТАВКИ
+    
+    // 2. Блокируем элементы
+    document.getElementById('btn-up').disabled = true;
+    document.getElementById('btn-down').disabled = true;
+    betAmountInput.disabled = true;
+    
+    // 3. Блокируем смену валют
+    blockCurrencySwitching(true);
+    
+    startCountdown();
+}
 
         // Запуск обратного отсчета
-        function startCountdown() {
-            let countdown = 5;
-            const timerElement = document.getElementById('timer');
-            timerElement.style.display = 'block';
-            timerElement.textContent = countdown;
-            
-            const countdownInterval = setInterval(() => {
-                countdown--;
-                timerElement.textContent = countdown;
-                
-                if (countdown <= 0) {
-                    clearInterval(countdownInterval);
-                    determineBetResult();
-                }
-            }, 1000);
+// Запуск обратного отсчета с защитой
+function startCountdown() {
+    let countdown = 5;
+    const timerElement = document.getElementById('timer');
+    
+    if (!timerElement) {
+        console.error('Элемент timer не найден');
+        resetTradingState();
+        return;
+    }
+    
+    timerElement.style.display = 'block';
+    timerElement.textContent = countdown;
+    
+    const countdownInterval = setInterval(() => {
+        countdown--;
+        timerElement.textContent = countdown;
+        
+        if (countdown <= 0) {
+            clearInterval(countdownInterval);
+            determineBetResult();
         }
+        
+        // Дополнительная проверка: если валюта изменилась во время отсчета
+        if (state.betCurrency && state.currentCurrency !== state.betCurrency) {
+            console.warn('Валюта изменилась во время торговли! Возвращаем обратно...');
+            // Возвращаем исходную валюту
+            switchToCurrency(state.betCurrency);
+        }
+    }, 1000);
+}
 
         // Определение результата ставки
-        function determineBetResult() {
-            let winChance = 0.45;
-            
-            if (systemSettings.doubleLuckMode) {
-                winChance = 0.9;
-            }
-            
-            const isWin = Math.random() < winChance;
-            
-            const resultElement = document.getElementById('bet-result');
-            resultElement.className = 'result';
-            
-            if (isWin) {
-                state.balances[state.currentCurrency] += state.betAmount;
-                resultElement.classList.add('success');
-                resultElement.textContent = `Поздравляем! Вы выиграли ${formatNumber(state.betAmount, 6)} ${state.currentCurrency}`;
-                
-                state.userStats.totalWins++;
-                
-                addTransaction('win', state.currentCurrency, state.betAmount);
-            } else {
-                state.balances[state.currentCurrency] -= state.betAmount;
-                resultElement.classList.add('failure');
-                resultElement.textContent = `К сожалению, вы проиграли ${formatNumber(state.betAmount, 6)} ${state.currentCurrency}`;
-                
-                state.userStats.totalLosses++;
-                
-                addTransaction('loss', state.currentCurrency, -state.betAmount);
-            }
-            
-            saveUserData();
-            
-            setTimeout(() => {
-                resetTradingState();
-            }, 3000);
-        }
+// Определение результата ставки - ИСПРАВЛЕННАЯ
+function determineBetResult() {
+    let winChance = 0.45;
+    
+    if (systemSettings.doubleLuckMode) {
+        winChance = 0.9;
+    }
+    
+    const isWin = Math.random() < winChance;
+    
+    const resultElement = document.getElementById('bet-result');
+    resultElement.className = 'result';
+    
+    // ИСПОЛЬЗУЕМ ЗАПОМНЕННУЮ ВАЛЮТУ, А НЕ ТЕКУЩУЮ
+    const betCurrency = state.betCurrency || state.currentCurrency;
+    const betAmount = state.betAmount;
+    
+    if (isWin) {
+        state.balances[betCurrency] += betAmount;
+        resultElement.classList.add('success');
+        resultElement.textContent = `Поздравляем! Вы выиграли ${formatNumber(betAmount, 6)} ${betCurrency}`;
+        
+        state.userStats.totalWins++;
+        
+        addTransaction('win', betCurrency, betAmount);
+    } else {
+        state.balances[betCurrency] -= betAmount;
+        resultElement.classList.add('failure');
+        resultElement.textContent = `К сожалению, вы проиграли ${formatNumber(betAmount, 6)} ${betCurrency}`;
+        
+        state.userStats.totalLosses++;
+        
+        addTransaction('loss', betCurrency, -betAmount);
+    }
+    
+    saveUserData();
+    
+    setTimeout(() => {
+        resetTradingState();
+    }, 3000);
+}
 
         // Сброс состояния торговли
-        function resetTradingState() {
-            state.isTrading = false;
-            document.getElementById('btn-up').disabled = false;
-            document.getElementById('btn-down').disabled = false;
-            document.getElementById('bet-amount').disabled = false;
-            document.getElementById('timer').style.display = 'none';
-            document.getElementById('bet-result').className = 'result';
-            document.getElementById('bet-amount').value = '';
-            
-            updateUI();
-        }
+// Сброс состояния торговли
+function resetTradingState() {
+    // Разблокируем смену валют
+    blockCurrencySwitching(false);
+    
+    // Сбрасываем состояние
+    state.isTrading = false;
+    state.betAmount = 0;
+    state.betDirection = null;
+    state.betCurrency = null;
+    
+    // Разблокируем элементы
+    document.getElementById('btn-up').disabled = false;
+    document.getElementById('btn-down').disabled = false;
+    
+    const betAmountInput = document.getElementById('bet-amount');
+    if (betAmountInput) {
+        betAmountInput.disabled = false;
+        betAmountInput.value = '';
+    }
+    
+    document.getElementById('timer').style.display = 'none';
+    document.getElementById('bet-result').className = 'result';
+    
+    updateUI();
+}
 
         // Обновление результата конвертации
         function updateConversionResult() {
@@ -7948,6 +8096,31 @@ function updateCurrencySelector() {
             option.classList.toggle('active', currency === state.currentCurrency);
         });
     }
+}
+
+// Блокировка/разблокировка смены валют
+function blockCurrencySwitching(block) {
+    if (!currencyOptions || currencyOptions.length === 0) {
+        currencyOptions = document.querySelectorAll('.currency-option');
+    }
+    
+    currencyOptions.forEach(option => {
+        if (block) {
+            // Добавляем класс блокировки
+            option.classList.add('disabled');
+            option.style.opacity = '0.5';
+            option.style.cursor = 'not-allowed';
+            option.style.pointerEvents = 'none';
+        } else {
+            // Убираем класс блокировки
+            option.classList.remove('disabled');
+            option.style.opacity = '1';
+            option.style.cursor = 'pointer';
+            option.style.pointerEvents = 'auto';
+        }
+    });
+    
+    console.log(`Смена валют ${block ? 'заблокирована' : 'разблокирована'}`);
 }
     </script>
 </body>
