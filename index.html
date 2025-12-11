@@ -7771,13 +7771,21 @@ function startPriceSimulation() {
         // 2. Обновляем текущую цену в верхней панели
         updateCurrentPrice();
         
-        // 3. Обновляем график если открыта вкладка trade
+        // 3. ВАЖНОЕ ИСПРАВЛЕНИЕ: Обновляем график если открыта вкладка trade
         const tradeTab = document.getElementById('trade');
         if (tradeTab && tradeTab.classList.contains('active')) {
-            // Ждем немного чтобы DOM успел обновиться
-            setTimeout(() => {
-                updateChart();
-            }, 50);
+            // Проверяем, существует ли график
+            if (state.chart && typeof state.chart.update === 'function') {
+                try {
+                    updateChart();
+                } catch (e) {
+                    console.log('Ошибка обновления графика, пересоздаем...');
+                    initChart();
+                }
+            } else {
+                // Если графика нет, создаем его
+                initChart();
+            }
         }
         
         // 4. Обновляем балансы в долларах
