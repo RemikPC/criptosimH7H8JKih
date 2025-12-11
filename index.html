@@ -1739,7 +1739,7 @@
         <header style="text-align: center; padding: 24px 0;">
             <h1 style="font-size: 2.5rem; margin-bottom: 12px; color: var(--primary); text-shadow: 0 0 20px rgba(200, 255, 0, 0.5);">
                 CryptoExchange Simulator
-                <span class="pulsating-update">Big Update!</span>
+                <span class="pulsating-update">Release!</span>
             </h1>
             <p style="color: var(--text-gray); font-size: 1.1rem;">Торгуйте, конвертируйте и управляйте криптовалютами</p>
         </header>
@@ -2729,6 +2729,7 @@
     </div>
 
     <script>
+        
         // Функция для безопасного уничтожения всех графиков акций
 function destroyAllStockCharts() {
     if (!state.stocks || !state.stocks.stockCharts) return;
@@ -3451,40 +3452,73 @@ function buyStock(stockId, amount) {
 }
 
 // Продажа акций
+// Замените функцию sellStock на эту исправленную версию
 function sellStock(stockId, amount) {
     const stock = state.stocks.companies.find(s => s.id === stockId);
+    if (!stock) {
+        showNotification('Акция не найдена', 'error');
+        return;
+    }
     
     amount = parseInt(amount);
     
-    if (!amount || amount <= 0) {
+    if (!amount || amount <= 0 || isNaN(amount)) {
         showNotification('Введите корректное количество акций', 'error');
         return;
     }
     
-    if (amount > stock.ownedShares) {
-        showNotification('Недостаточно акций для продажи', 'error');
+    if (!Number.isInteger(amount)) {
+        showNotification('Количество акций должно быть целым числом', 'error');
         return;
     }
     
+    // КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Проверяем, что продаем не больше, чем у нас есть
+    if (amount > stock.ownedShares) {
+        showNotification(`Недостаточно акций для продажи. У вас: ${stock.ownedShares}`, 'error');
+        return;
+    }
+    
+    // КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Рассчитываем выручку по текущей цене
     const totalValue = stock.price * amount;
     
+    // Показываем подтверждение
     showConfirmModal(
-        `Вы уверены, что хотите продать ${amount} акций ${stock.name} за ${formatNumber(totalValue)} ₽?`,
+        `Продать ${amount} акций ${stock.name} за ${formatNumber(totalValue)} ₽?`,
         () => {
-            state.balances.BROKER += totalValue;
-            stock.ownedShares -= amount;
-            
-            // Добавляем в историю транзакций
-            addTransaction('stock_sell', `${stock.symbol}`, totalValue, -amount, 'shares');
-            
-            // Сохраняем данные
-            saveUserData();
-            
-            // Обновляем UI - ИСПРАВЛЕНИЕ: не очищаем поле сразу
-            updateUI();
-            
-            // Показываем уведомление
-            showNotification(`Успешно продано ${amount} акций ${stock.name}`, 'success');
+            try {
+                // Выполняем продажу
+                state.balances.BROKER = safeAdd(state.balances.BROKER, totalValue);
+                stock.ownedShares -= amount;
+                
+                // ГАРАНТИЯ: ownedShares никогда не должен быть меньше 0
+                if (stock.ownedShares < 0) {
+                    console.error('Ошибка: ownedShares стал отрицательным для', stock.name);
+                    stock.ownedShares = 0;
+                }
+                
+                // ГАРАНТИЯ: ownedShares никогда не должен быть больше totalShares
+                if (stock.ownedShares > stock.totalShares) {
+                    console.error('Ошибка: ownedShares превысил totalShares для', stock.name);
+                    stock.ownedShares = stock.totalShares;
+                }
+                
+                // Добавляем в историю
+                addTransaction('stock_sell', stock.symbol, totalValue, -amount, 'акций');
+                
+                // Сохраняем данные
+                saveUserData();
+                
+                // Обновляем UI
+                updateUI();
+                updateStocksUI();
+                
+                // Показываем уведомление
+                showNotification(`Продано ${amount} акций ${stock.name} за ${formatNumber(totalValue)} ₽`, 'success');
+                
+            } catch (error) {
+                console.error('Ошибка при продаже акций:', error);
+                showNotification('Произошла ошибка при продаже акций', 'error');
+            }
         }
     );
 }
@@ -3928,6 +3962,29 @@ function loadUserData() {
         // Игнорируем
     }
     state.chart = null;
+    function validateStocksData() {
+    if (!state.stocks || !state.stocks.companies) return;
+    
+    state.stocks.companies.forEach(company => {
+        // Исправление: ownedShares не может быть отрицательным
+        if (company.ownedShares < 0) {
+            console.warn(`Исправляю отрицательные акции для ${company.name}: было ${company.ownedShares}`);
+            company.ownedShares = 0;
+        }
+        
+        // Исправление: ownedShares не может быть больше totalShares
+        if (company.ownedShares > company.totalShares) {
+            console.warn(`Исправляю избыточные акции для ${company.name}: было ${company.ownedShares}, максимум ${company.totalShares}`);
+            company.ownedShares = company.totalShares;
+        }
+        
+        // Исправление: price должен быть положительным
+        if (company.price <= 0) {
+            console.warn(`Исправляю цену для ${company.name}: было ${company.price}`);
+            company.price = 1000; // Базовая цена
+        }
+    });
+}
 }
 
 // Очищаем графики акций
@@ -4522,30 +4579,37 @@ if (tabName === 'trade') {
 }
 
 // Вспомогательная функция для обновления всех балансов на дисплее
+// В функции updateAllBalancesDisplay добавьте защиту от отрицательных значений
 function updateAllBalancesDisplay() {
     // Рублевый счет
-    document.getElementById('rub-balance').textContent = formatNumber(state.balances.RUB) + ' ₽';
+    const rubBalance = Math.max(0, state.balances.RUB);
+    document.getElementById('rub-balance').textContent = formatNumber(rubBalance) + ' ₽';
     
-    // Криптовалюты
-    document.getElementById('btc-balance').textContent = formatNumber(state.balances.BTC, 6) + ' BTC';
-    document.getElementById('eth-balance').textContent = formatNumber(state.balances.ETH, 4) + ' ETH';
-    document.getElementById('ton-balance').textContent = formatNumber(state.balances.TON, 2) + ' TON';
-    document.getElementById('stars-balance').textContent = Math.floor(state.balances.STARS) + ' STARS';
+    // Криптовалюты (защита от отрицательных значений)
+    const btcBalance = Math.max(0, state.balances.BTC);
+    const ethBalance = Math.max(0, state.balances.ETH);
+    const tonBalance = Math.max(0, state.balances.TON);
+    const starsBalance = Math.max(0, state.balances.STARS);
+    const catBalance = Math.max(0, state.balances.CAT);
+    const brokerBalance = Math.max(0, state.balances.BROKER);
     
-    // Catcoins (если есть)
+    document.getElementById('btc-balance').textContent = formatNumber(btcBalance, 6) + ' BTC';
+    document.getElementById('eth-balance').textContent = formatNumber(ethBalance, 4) + ' ETH';
+    document.getElementById('ton-balance').textContent = formatNumber(tonBalance, 2) + ' TON';
+    document.getElementById('stars-balance').textContent = Math.floor(starsBalance) + ' STARS';
+    document.getElementById('broker-balance-wallet').textContent = formatNumber(brokerBalance) + ' ₽';
+    
+    // Catcoins
     const catBalanceCard = document.getElementById('catcoin-balance-card');
-    const catBalance = document.getElementById('cat-balance');
-    if (catBalanceCard && catBalance) {
-        if (state.balances.CAT > 0) {
+    const catBalanceElement = document.getElementById('cat-balance');
+    if (catBalanceCard && catBalanceElement) {
+        if (catBalance > 0) {
             catBalanceCard.style.display = 'flex';
-            catBalance.textContent = Math.floor(state.balances.CAT) + ' CAT';
+            catBalanceElement.textContent = Math.floor(catBalance) + ' CAT';
         } else {
             catBalanceCard.style.display = 'none';
         }
     }
-    
-    // Брокерский счет
-    document.getElementById('broker-balance-wallet').textContent = formatNumber(state.balances.BROKER) + ' ₽';
 }
 
 // Функция для обновления текущей цены
@@ -7882,13 +7946,16 @@ currencyOptions.forEach(option => {
 // Форматирование чисел с исправлением
 // Форматирование чисел с безопасным округлением
 function formatNumber(num, decimals = 2) {
-    if (isNaN(num)) return '0';
+    if (isNaN(num) || !isFinite(num)) return '0';
     
-    // Сначала округляем до нужного количества знаков
-    const rounded = parseFloat(num.toFixed(decimals));
+    // Округляем и обрезаем до нужного количества знаков
+    const factor = Math.pow(10, decimals);
+    const rounded = Math.round(num * factor) / factor;
     
-    // Затем форматируем
-    return rounded.toLocaleString('ru-RU', {
+    // Гарантируем, что число не отрицательное
+    const safeNumber = Math.max(0, rounded);
+    
+    return safeNumber.toLocaleString('ru-RU', {
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals
     });
@@ -7948,11 +8015,13 @@ function formatNumber(num, decimals = 2) {
         }
         // Функция для безопасного вычитания с плавающими числами
 function safeSubtract(a, b) {
-    return parseFloat((a - b).toFixed(8));
+    const result = parseFloat((a - b).toFixed(8));
+    return Math.max(0, result); // Гарантируем неотрицательный результат
 }
 
 function safeAdd(a, b) {
-    return parseFloat((a + b).toFixed(8));
+    const result = parseFloat((a + b).toFixed(8));
+    return Math.max(0, result);
 }
 
 // Используйте эти функции в расчетах:
