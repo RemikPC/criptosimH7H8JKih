@@ -5834,44 +5834,52 @@ function destroyAllStockCharts() {
         }
 
         // Покупка недвижимости
-        function buyProperty(propertyId) {
-            const property = propertiesData.find(p => p.id === propertyId);
-            if (!property) return;
+// НАЙДИ ЭТУ ФУНКЦИЮ И ЗАМЕНИ ВСЮ:
+function buyProperty(propertyId) {
+    const property = propertiesData.find(p => p.id === propertyId);
+    if (!property) return;
 
-            const hasVerifiedDocument = state.bank.documents.some(doc => 
-                doc.status === 'verified' && doc.verified === true && doc.type === property.documentType
-            );
+    const hasVerifiedDocument = state.bank.documents.some(doc => 
+        doc.status === 'verified' && doc.verified === true && doc.type === property.documentType
+    );
 
-            if (!hasVerifiedDocument) {
-                const docTypeName = getDocumentTypeName(property.documentType);
-                showNotification(`Для покупки ${property.name} необходим подтвержденный документ типа "${docTypeName}"`, 'error');
-                return;
-            }
+    if (!hasVerifiedDocument) {
+        const docTypeName = getDocumentTypeName(property.documentType);
+        showNotification(`Для покупки ${property.name} необходим подтвержденный документ типа "${docTypeName}"`, 'error');
+        return;
+    }
 
-            if (state.bank.balance < property.price) {
-                showNotification('Недостаточно средств на банковском счете', 'error');
-                return;
-            }
+    if (state.bank.balance < property.price) {
+        showNotification('Недостаточно средств на банковском счете', 'error');
+        return;
+    }
 
-            showConfirmModal(
-                `Вы уверены, что хотите купить ${property.name} за ${formatNumber(property.price)} ₽?`,
-                () => {
-                    state.bank.balance -= property.price;
-                    state.bank.properties.push({
-                        id: property.id,
-                        name: property.name,
-                        price: property.price,
-                        emoji: property.emoji,
-                        type: property.type,
-                        purchaseDate: new Date().toLocaleDateString('ru-RU')
-                    });
-                    
-                    saveUserData();
-                    updateUI();
-                    showNotification(`${property.name} успешно куплен(а)!`, 'success');
-                }
-            );
+    // ИСПРАВЛЕНИЕ: Проверяем, не куплено ли уже это имущество
+    const isAlreadyOwned = state.bank.properties.some(p => p.id === propertyId);
+    if (isAlreadyOwned) {
+        showNotification(`Вы уже владеете ${property.name}!`, 'error');
+        return;
+    }
+
+    showConfirmModal(
+        `Вы уверены, что хотите купить ${property.name} за ${formatNumber(property.price)} ₽?`,
+        () => {
+            state.bank.balance -= property.price;
+            state.bank.properties.push({
+                id: property.id,
+                name: property.name,
+                price: property.price,
+                emoji: property.emoji,
+                type: property.type,
+                purchaseDate: new Date().toLocaleDateString('ru-RU')
+            });
+            
+            saveUserData();
+            updateUI();
+            showNotification(`${property.name} успешно куплен(а)!`, 'success');
         }
+    );
+}
 
         // Покупка яхты
         function buyYacht(yachtId) {
