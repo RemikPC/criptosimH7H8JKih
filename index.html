@@ -1732,6 +1732,402 @@
     cursor: not-allowed !important;
     pointer-events: none !important;
 }
+/* Fragment Styles */
+.fragment-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.fragment-header {
+    text-align: center;
+    padding: 40px 0 30px;
+}
+
+.fragment-tabs {
+    display: flex;
+    background-color: var(--dark-element);
+    border-radius: 16px;
+    padding: 8px;
+    margin: 20px 0 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fragment-tab {
+    flex: 1;
+    text-align: center;
+    padding: 16px 0;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    color: var(--text-gray);
+    position: relative;
+    overflow: hidden;
+}
+
+.fragment-tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.fragment-tab:hover::before {
+    left: 100%;
+}
+
+.fragment-tab.active {
+    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    color: white;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+    transform: translateY(-2px);
+}
+
+.fragment-content {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.fragment-content.active {
+    display: block;
+}
+
+/* Ники стили */
+.nicks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 24px;
+}
+
+.nick-card {
+    background: var(--dark-element);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.nick-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 8px 25px rgba(200, 255, 0, 0.2);
+}
+
+.nick-card.owned {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1));
+    border-color: #8B5CF6;
+}
+
+.nick-card.premium {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
+    border-color: #FFD700;
+}
+
+.nick-name {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: var(--primary);
+}
+
+.nick-card.premium .nick-name {
+    color: #FFD700;
+}
+
+.nick-price {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: var(--text-light);
+}
+
+.nick-change {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.nick-change.positive {
+    background: rgba(0, 200, 81, 0.2);
+    color: var(--success);
+}
+
+.nick-change.negative {
+    background: rgba(255, 68, 68, 0.2);
+    color: var(--danger);
+}
+
+.nick-availability {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    margin-bottom: 20px;
+}
+
+.nick-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* NFT на рынке */
+.market-nft-card {
+    background: var(--dark-element);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.market-nft-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #8B5CF6, #7C3AED);
+}
+
+.market-nft-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(139, 92, 246, 0.3);
+}
+
+.market-nft-image {
+    width: 100%;
+    height: 150px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.market-nft-info {
+    margin-bottom: 16px;
+}
+
+.market-nft-name {
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+}
+
+.market-nft-owner {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    margin-bottom: 8px;
+}
+
+.market-nft-price {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.market-nft-status {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.market-nft-status.available {
+    background: rgba(0, 200, 81, 0.2);
+    color: var(--success);
+}
+
+.market-nft-status.selling {
+    background: rgba(255, 200, 0, 0.2);
+    color: #FFD700;
+}
+
+.sale-timer {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    margin-top: 12px;
+    font-family: 'Courier New', monospace;
+}
+
+/* Fragment NFT селектор */
+.fragment-nft-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.fragment-nft-item {
+    background: var(--dark-element);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.fragment-nft-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+}
+
+.fragment-nft-item.selected {
+    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    color: white;
+    border-color: #8B5CF6;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.fragment-nft-emoji {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.fragment-nft-rarity {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.rarity-common { background-color: #6B7280; color: white; }
+.rarity-uncommon { background-color: #10B981; color: white; }
+.rarity-rare { background-color: #3B82F6; color: white; }
+.rarity-epic { background-color: #8B5CF6; color: white; }
+.rarity-legendary { background-color: #F59E0B; color: white; }
+.rarity-godlike { background-color: #000000; color: white; }
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .fragment-tabs {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .nicks-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
+    .fragment-nft-selector {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+/* Добавьте в CSS стили */
+.fragment-nft-item.warning {
+    border: 2px solid #FFD700 !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+.fragment-nft-item.danger {
+    border: 2px solid var(--danger) !important;
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+    animation: pulse-danger 2s infinite;
+}
+
+@keyframes pulse-danger {
+    0% { box-shadow: 0 0 10px rgba(255, 68, 68, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(255, 68, 68, 0.5); }
+    100% { box-shadow: 0 0 10px rgba(255, 68, 68, 0.3); }
+}
+
+.burn-warning {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background: var(--danger);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    z-index: 1;
+}
+/* Добавьте в CSS */
+.price-info-container {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.price-info-danger {
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid rgba(255, 68, 68, 0.3);
+    color: var(--danger);
+}
+
+.price-info-warning {
+    background: rgba(255, 152, 0, 0.1);
+    border: 1px solid rgba(255, 152, 0, 0.3);
+    color: #FF9800;
+}
+
+.price-info-success {
+    background: rgba(0, 200, 81, 0.1);
+    border: 1px solid rgba(0, 200, 81, 0.3);
+    color: var(--success);
+}
+
+.price-info-normal {
+    background: rgba(200, 255, 0, 0.1);
+    border: 1px solid rgba(200, 255, 0, 0.3);
+    color: var(--primary);
+}
+
+.chance-indicator {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.chance-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.chance-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.chance-high { background: linear-gradient(90deg, var(--success), #00ff88); }
+.chance-medium { background: linear-gradient(90deg, #FFD700, #ffaa00); }
+.chance-low { background: linear-gradient(90deg, #FF9800, #ff5500); }
+.chance-very-low { background: linear-gradient(90deg, var(--danger), #ff0000); }
     </style>
 </head>
 <body>
@@ -1739,7 +2135,7 @@
         <header style="text-align: center; padding: 24px 0;">
             <h1 style="font-size: 2.5rem; margin-bottom: 12px; color: var(--primary); text-shadow: 0 0 20px rgba(200, 255, 0, 0.5);">
                 CryptoExchange Simulator
-                <span class="pulsating-update">Release!</span>
+                <span class="pulsating-update">Fragment!</span>
             </h1>
             <p style="color: var(--text-gray); font-size: 1.1rem;">Торгуйте, конвертируйте и управляйте криптовалютами</p>
         </header>
@@ -1761,6 +2157,7 @@
             <div class="nav-tab" data-tab="profile">Профиль</div>
             <div class="nav-tab" id="admin-tab" data-tab="admin" style="display: none;">Админ</div>
             <div class="nav-tab" data-tab="bank" style="background: linear-gradient(135deg, var(--bank-light-blue), #1e40af); color: white;">Банк</div>
+            <div class="nav-tab" data-tab="fragment" style="background: linear-gradient(135deg, #8B5CF6, #7C3AED); color: white;">Fragment</div>
         </div>
 
         <!-- Аутентификация -->
@@ -2706,6 +3103,111 @@
                 </div>
             </div>
         </div>
+        <!-- Вкладка "Fragment" -->
+<div id="fragment" class="tab-content">
+    <div class="fragment-container">
+        <div class="fragment-header">
+            <h1 style="text-align: center; font-size: 3rem; margin-bottom: 12px; background: linear-gradient(135deg, #8B5CF6, #7C3AED); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">✨ Fragment</h1>
+            <p style="text-align: center; color: var(--text-gray); font-size: 1.1rem;">Покупка и продажа эксклюзивных ников и NFT</p>
+        </div>
+
+        <div class="fragment-tabs">
+            <div class="fragment-tab active" data-fragment-tab="nicks">Ники</div>
+            <div class="fragment-tab" data-fragment-tab="nft-market">Рынок NFT</div>
+        </div>
+
+        <!-- Вкладка "Ники" -->
+        <div id="fragment-nicks" class="fragment-content active">
+            <div class="card">
+                <h2 class="card-title">Ваши ники</h2>
+                
+                <div class="profile-info" style="margin-bottom: 30px;">
+                    <div class="profile-avatar" id="current-nick-avatar">U</div>
+                    <h2 id="current-nick-display">@user</h2>
+                    <p style="color: var(--text-gray); margin-top: 10px;" id="additional-nicks-display">
+                        <!-- Дополнительные ники будут загружены динамически -->
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Доступные ники для покупки</h3>
+                    <p style="color: var(--text-gray); margin-bottom: 24px;">Ники можно купить только за STARS и продать только за TON</p>
+                    
+                    <div class="nicks-grid" id="nicks-market-grid">
+                        <!-- Ники будут загружены динамически -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Продажа ников</h3>
+                    <div class="form-group">
+                        <label class="form-label" for="sell-nick-select">Выберите ник для продажи</label>
+                        <select id="sell-nick-select" class="form-control">
+                            <!-- Ники для продажи будут загружены динамически -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Текущая цена продажи</label>
+                        <input type="text" id="sell-nick-price" class="form-control" readonly>
+                    </div>
+                    
+                    <button id="btn-sell-nick" class="btn btn-danger btn-block">Продать выбранный ник</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Вкладка "Рынок NFT" -->
+        <div id="fragment-nft-market" class="fragment-content">
+            <div class="card">
+                <h2 class="card-title">Рынок улучшенных NFT</h2>
+                <p style="color: var(--text-gray); margin-bottom: 24px;">Покупайте и продавайте улучшенные NFT на бирже</p>
+                
+                <div class="nft-grid" id="fragment-nft-grid">
+                    <!-- Улучшенные NFT на рынке будут загружены динамически -->
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Продать NFT на рынке</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Выберите улучшенный NFT для продажи</label>
+                    <div class="nft-selector" id="fragment-sell-nft-selector">
+                        <!-- Улучшенные NFT для продажи будут загружены динамически -->
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Цена продажи (STARS)</label>
+                    <input type="number" id="fragment-sell-price" class="form-control" placeholder="Введите цену">
+                    <div style="margin-top: 10px; font-size: 0.9rem; color: var(--text-gray);">
+                        Максимальная цена: <span id="max-sell-price">0</span> STARS (1.8x от рыночной)
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div style="background: var(--gradient-primary); padding: 20px; border-radius: 12px; margin-bottom: 20px; color: white;">
+                        <h4>📊 Вероятность продажи</h4>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Без удачи:</span>
+                            <span id="sell-chance-normal">45%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>С 2x удачей:</span>
+                            <span id="sell-chance-luck">65%</span>
+                        </div>
+                        <div style="font-size: 0.9rem; margin-top: 10px; opacity: 0.9;">
+                            Продажа занимает 2 минуты. Если не продастся, NFT вернется к вам
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="btn-sell-fragment-nft" class="btn btn-block">Выставить на рынок</button>
+            </div>
+        </div>
+    </div>
+</div>
     </div>
 
     <!-- Уведомление -->
@@ -2935,6 +3437,15 @@ stocks: {
 // В конце документа, в DOMContentLoaded, убедитесь что initTradeTab() вызывается правильно:
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM загружен, начинаем инициализацию...');
+        // Инициализация вкладки Fragment
+    setTimeout(() => {
+        initFragmentTab();
+    }, 1000);
+    
+    // Запуск симуляции цен ников
+    setTimeout(() => {
+        startNickPriceSimulation();
+    }, 5000);
     
     // Загрузка системных настроек
     loadSystemSettings();
@@ -2991,7 +3502,33 @@ document.addEventListener('DOMContentLoaded', function() {
         startAutoClicker();
         startDividendsPayment();
     }, 2000);
+    setTimeout(() => {
+        console.log('Начинаем инициализацию Fragment...');
+        try {
+            initFragmentTab();
+            
+            // Очищаем устаревшие продажи
+            setTimeout(() => {
+                cleanupOldSales();
+            }, 2000);
+            
+            console.log('Fragment успешно инициализирован');
+        } catch (error) {
+            console.error('Ошибка инициализации Fragment:', error);
+        }
+    }, 1500);
     
+    // Запуск симуляции цен ников
+    setTimeout(() => {
+        console.log('Запуск симуляции цен ников...');
+        try {
+            startNickPriceSimulation();
+            console.log('Симуляция цен ников запущена');
+        } catch (error) {
+            console.error('Ошибка запуска симуляции цен ников:', error);
+        }
+    }, 6000);
+
     console.log('Инициализация завершена');
 });
 
@@ -3453,6 +3990,7 @@ function buyStock(stockId, amount) {
 
 // Продажа акций
 // Замените функцию sellStock на эту исправленную версию
+// Продажа акций - ИСПРАВЛЕННАЯ ВЕРСИЯ
 function sellStock(stockId, amount) {
     const stock = state.stocks.companies.find(s => s.id === stockId);
     if (!stock) {
@@ -3478,12 +4016,13 @@ function sellStock(stockId, amount) {
         return;
     }
     
-    // КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Рассчитываем выручку по текущей цене
-    const totalValue = stock.price * amount;
+    // ИСПРАВЛЕНИЕ БАГА 2: Используем ТЕКУЩУЮ цену из состояния, а не из DOM
+    const currentPrice = stock.price; // Берем из состояния, которое обновляется в реальном времени
+    const totalValue = currentPrice * amount;
     
-    // Показываем подтверждение
+    // Показываем подтверждение с реальной ценой
     showConfirmModal(
-        `Продать ${amount} акций ${stock.name} за ${formatNumber(totalValue)} ₽?`,
+        `Продать ${amount} акций ${stock.name} по ${formatNumber(currentPrice)} ₽ за акцию? Итого: ${formatNumber(totalValue)} ₽`,
         () => {
             try {
                 // Выполняем продажу
@@ -3603,9 +4142,15 @@ function updateStocksUI() {
 // Обновление списка акций
 // Обновление списка акций
 // Обновление списка акций
+// Обновление списка акций - ИСПРАВЛЕННАЯ ВЕРСИЯ
 function updateStocksList() {
     const stocksList = document.getElementById('stocks-list');
     const ownedStocksList = document.getElementById('owned-stocks-list');
+    
+    if (!stocksList || !ownedStocksList) {
+        console.error('Элементы списка акций не найдены');
+        return;
+    }
     
     // Сохраняем текущие значения полей ввода ДО перерисовки
     const oldValues = {};
@@ -3622,6 +4167,12 @@ function updateStocksList() {
     let totalDividends = 0;
     
     state.stocks.companies.forEach(company => {
+        // Валидация данных компании
+        if (!company || typeof company.price !== 'number' || company.price <= 0) {
+            console.warn('Некорректные данные компании:', company);
+            return;
+        }
+        
         // Расчет дивидендов для этой компании
         if (company.ownedShares > 0) {
             hasOwnedStocks = true;
@@ -3642,7 +4193,7 @@ function updateStocksList() {
                     </div>
                 </div>
                 <div class="ownership-bar">
-                    <div class="ownership-fill" style="width: ${ownershipPercent}%"></div>
+                    <div class="ownership-fill" style="width: ${Math.min(100, ownershipPercent)}%"></div>
                 </div>
                 <div class="ownership-percent">
                     ${ownershipPercent.toFixed(1)}%
@@ -3652,36 +4203,36 @@ function updateStocksList() {
             ownedStocksList.appendChild(ownedStockItem);
             
             // Проверка на налоги (75%+ владение) - ТОЛЬКО ИНФОРМАЦИОННОЕ УВЕДОМЛЕНИЕ
-if (ownershipPercent >= 75) {
-    const taxAmount = company.ownedShares * company.price * 0.01; // 1% налог
-    
-    // Проверяем, когда был последний платеж налога
-    const now = Date.now();
-    const lastPaymentTime = company.lastTaxPayment || 0;
-    const timeSinceLastPayment = now - lastPaymentTime;
-    
-    // Только если еще не было платежа или прошло больше 4.5 минут
-    if (lastPaymentTime === 0 || timeSinceLastPayment > 270000) { // 4.5 минуты = 270000 мс
-        const timeRemaining = Math.max(0, 300000 - timeSinceLastPayment);
-        const minutes = Math.floor(timeRemaining / 60000);
-        const seconds = Math.floor((timeRemaining % 60000) / 1000);
-        
-        // Показываем уведомление только раз в 30 секунд, когда осталось мало времени
-        if (timeRemaining <= 60000) { // Меньше минуты осталось
-            // Показываем уведомление с 10% шансом, чтобы не спамить
-            if (Math.random() < 0.1 && !company.lastTaxNotificationShown) {
-                showNotification(
-                    `Следующий налог ${company.name}: ${formatNumber(taxAmount)} ₽ через ${minutes}:${seconds.toString().padStart(2, '0')}`, 
-                    'info'
-                );
-                company.lastTaxNotificationShown = true;
+            if (ownershipPercent >= 75) {
+                const taxAmount = company.ownedShares * company.price * 0.01; // 1% налог
+                
+                // Проверяем, когда был последний платеж налога
+                const now = Date.now();
+                const lastPaymentTime = company.lastTaxPayment || 0;
+                const timeSinceLastPayment = now - lastPaymentTime;
+                
+                // Только если еще не было платежа или прошло больше 4.5 минут
+                if (lastPaymentTime === 0 || timeSinceLastPayment > 270000) { // 4.5 минуты = 270000 мс
+                    const timeRemaining = Math.max(0, 300000 - timeSinceLastPayment);
+                    const minutes = Math.floor(timeRemaining / 60000);
+                    const seconds = Math.floor((timeRemaining % 60000) / 1000);
+                    
+                    // Показываем уведомление только раз в 30 секунд, когда осталось мало времени
+                    if (timeRemaining <= 60000) { // Меньше минуты осталось
+                        // Показываем уведомление с 10% шансом, чтобы не спамить
+                        if (Math.random() < 0.1 && !company.lastTaxNotificationShown) {
+                            showNotification(
+                                `Следующий налог ${company.name}: ${formatNumber(taxAmount)} ₽ через ${minutes}:${seconds.toString().padStart(2, '0')}`, 
+                                'info'
+                            );
+                            company.lastTaxNotificationShown = true;
+                        }
+                    }
+                } else {
+                    // Сбрасываем флаг уведомления
+                    company.lastTaxNotificationShown = false;
+                }
             }
-        }
-    } else {
-        // Сбрасываем флаг уведомления
-        company.lastTaxNotificationShown = false;
-    }
-}
         }
         
         // Восстанавливаем старое значение или используем пустое
@@ -3731,11 +4282,12 @@ if (ownershipPercent >= 75) {
             <div class="stock-actions">
                 <div style="flex: 1;">
                     <input type="number" id="${buyInputId}" class="form-control stock-input" 
-                           placeholder="Кол-во" min="1" max="${company.totalShares - company.ownedShares}" 
+                           placeholder="Кол-во" min="1" max="${Math.max(0, company.totalShares - company.ownedShares)}" 
                            value="${oldBuyValue}" style="transition: none !important;">
                 </div>
                 <button class="btn btn-success" style="flex: 1;" 
-                        onclick="buyStock(${company.id}, document.getElementById('${buyInputId}').value)">
+                        onclick="buyStock(${company.id}, document.getElementById('${buyInputId}').value)"
+                        data-current-price="${company.price}">
                     Купить
                 </button>
             </div>
@@ -3748,7 +4300,8 @@ if (ownershipPercent >= 75) {
                                value="${oldSellValue}" style="transition: none !important;">
                     </div>
                     <button class="btn btn-danger" style="flex: 1;" 
-                            onclick="sellStock(${company.id}, document.getElementById('${sellInputId}').value)">
+                            onclick="sellStock(${company.id}, document.getElementById('${sellInputId}').value)"
+                            data-current-price="${company.price}">
                         Продать
                     </button>
                 </div>
@@ -3768,11 +4321,49 @@ if (ownershipPercent >= 75) {
     
     // Показываем или скрываем информацию о дивидендах
     const dividendsInfo = document.getElementById('dividends-info');
-    if (hasOwnedStocks) {
-        dividendsInfo.style.display = 'block';
-        document.getElementById('dividends-amount').textContent = formatNumber(totalDividends) + ' ₽/2мин';
-    } else {
-        dividendsInfo.style.display = 'none';
+    if (dividendsInfo) {
+        if (hasOwnedStocks) {
+            dividendsInfo.style.display = 'block';
+            document.getElementById('dividends-amount').textContent = formatNumber(totalDividends) + ' ₽/2мин';
+        } else {
+            dividendsInfo.style.display = 'none';
+        }
+    }
+    
+    // Валидация всех балансов акций
+    validateStockOwnership();
+}
+
+// Функция для валидации владения акциями
+function validateStockOwnership() {
+    let fixed = false;
+    
+    state.stocks.companies.forEach(company => {
+        // Исправление: ownedShares не может быть отрицательным
+        if (company.ownedShares < 0) {
+            console.warn(`Исправляю отрицательные акции для ${company.name}: было ${company.ownedShares}`);
+            company.ownedShares = 0;
+            fixed = true;
+        }
+        
+        // Исправление: ownedShares не может быть больше totalShares
+        if (company.ownedShares > company.totalShares) {
+            console.warn(`Исправляю избыточные акции для ${company.name}: было ${company.ownedShares}, максимум ${company.totalShares}`);
+            company.ownedShares = company.totalShares;
+            fixed = true;
+        }
+        
+        // Исправление: price должен быть положительным
+        if (company.price <= 0) {
+            console.warn(`Исправляю цену для ${company.name}: было ${company.price}`);
+            company.price = company.basePrice || 1000; // Базовая цена
+            fixed = true;
+        }
+    });
+    
+    if (fixed) {
+        saveUserData();
+        console.log('Владение акциями проверено и исправлено');
     }
 }
 
@@ -3955,6 +4546,7 @@ function createStockChart(company) {
         // Загрузка данных пользователя - ОБНОВЛЕНА
 // Загрузка данных пользователя - ОБНОВЛЕНА с исправлением циклических ссылок
 function loadUserData() {
+    
     if (state.chart) {
     try {
         state.chart.destroy();
@@ -4162,6 +4754,7 @@ if (state.stocks && state.stocks.stockCharts) {
         
         saveUserData();
     }
+    loadFragmentData();
 }
 
         // Сохранение данных пользователя - ОБНОВЛЕНА
@@ -4219,6 +4812,7 @@ function saveUserData() {
         }
         
         localStorage.setItem(`cryptoExchangeData_${state.user.username}`, JSON.stringify(saveData));
+        saveFragmentData();
     } catch (e) {
         console.error('Ошибка сохранения данных пользователя:', e);
     }
@@ -4276,6 +4870,9 @@ function saveUserData() {
             
             // Обновление статистики профиля
             updateProfileStats();
+                if (document.getElementById('fragment') && document.getElementById('fragment').classList.contains('active')) {
+        updateFragmentUI();
+    }
             
             // НОВОЕ: Обновление селектора слотов если вкладка активна
             if (document.getElementById('slots').classList.contains('active')) {
@@ -4554,7 +5151,12 @@ if (tabName === 'trade') {
                 }, 100);
             }
             break;
-            
+                    case 'fragment':
+            // Fragment - обновляем интерфейс
+            setTimeout(() => {
+                updateFragmentUI();
+            }, 100);
+            break;
         case 'bank':
             // Банк - обновляем интерфейс банка
             setTimeout(() => {
@@ -7239,6 +7841,7 @@ function preciseMultiply(a, b) {
     return parseFloat(result.toFixed(8));
 }
 
+// Выполнение конвертации - ИСПРАВЛЕННАЯ ВЕРСИЯ
 function performConversion() {
     const fromCurrency = document.getElementById('from-currency').value;
     const toCurrency = document.getElementById('to-currency').value;
@@ -7247,7 +7850,6 @@ function performConversion() {
     console.log('Начало конвертации:', { fromCurrency, toCurrency, amount });
     
     // ===== 1. ВАЛИДАЦИЯ ВХОДНЫХ ДАННЫХ =====
-    // Преобразуем в число с учетом запятых и точек
     amount = parseFloat(amount.replace(',', '.'));
     
     if (isNaN(amount) || amount <= 0) {
@@ -7264,20 +7866,14 @@ function performConversion() {
         }
     }
     
+    // Фиксируем сумму для избежания погрешности
+    const amountFixed = parseFloat(amount.toFixed(8));
+    
     // ===== 2. ПРОВЕРКА БАЛАНСА С ЗАПАСОМ =====
-    const availableBalance = parseFloat(state.balances[fromCurrency].toFixed(8));
-    const amountToCheck = parseFloat(amount.toFixed(8));
+    const currentBalance = parseFloat(state.balances[fromCurrency].toFixed(8));
     
-    console.log('Проверка баланса:', {
-        availableBalance,
-        amountToCheck,
-        fromCurrency,
-        balance: state.balances[fromCurrency]
-    });
-    
-    // Используем запас в 0.000001 для плавающих чисел
-    if (amountToCheck > availableBalance + 0.000001) {
-        showNotification(`Недостаточно средств. Доступно: ${formatNumber(availableBalance, 8)} ${fromCurrency}`, 'error');
+    if (amountFixed > currentBalance + 0.000001) {
+        showNotification(`Недостаточно средств. Доступно: ${formatNumber(currentBalance, 8)} ${fromCurrency}`, 'error');
         return;
     }
     
@@ -7327,8 +7923,8 @@ function performConversion() {
     }
     
     // Расчет комиссии (2%) с округлением до 8 знаков
-    const fee = parseFloat((amount * 0.02).toFixed(8));
-    const amountAfterFee = parseFloat((amount - fee).toFixed(8));
+    const fee = parseFloat((amountFixed * 0.02).toFixed(8));
+    const amountAfterFee = parseFloat((amountFixed - fee).toFixed(8));
     let result = parseFloat((amountAfterFee * rate).toFixed(8));
     
     // Для STARS и CAT округляем до целого числа вниз
@@ -7342,7 +7938,7 @@ function performConversion() {
     
     // ===== 5. ФИНАЛЬНАЯ ПРОВЕРКА БАЛАНСА =====
     // Округляем до 8 знаков для точного сравнения
-    const finalAmount = parseFloat(amount.toFixed(8));
+    const finalAmount = parseFloat(amountFixed.toFixed(8));
     const finalBalance = parseFloat(state.balances[fromCurrency].toFixed(8));
     
     if (finalAmount > finalBalance) {
@@ -7361,48 +7957,47 @@ function performConversion() {
     });
     
     // ===== 6. ПОДТВЕРЖДЕНИЕ ОПЕРАЦИИ =====
-    const confirmMessage = `Вы уверены, что хотите конвертировать ${fromCurrency === 'STARS' || fromCurrency === 'CAT' ? Math.floor(amount) : formatNumber(amount, 6)} ${fromCurrency} в ${toCurrency === 'STARS' || toCurrency === 'CAT' ? Math.floor(result) : formatNumber(result, 6)} ${toCurrency}? Комиссия: ${formatNumber(fee, 6)} ${fromCurrency}`;
+    const confirmMessage = `Вы уверены, что хотите конвертировать ${fromCurrency === 'STARS' || fromCurrency === 'CAT' ? Math.floor(amountFixed) : formatNumber(amountFixed, 6)} ${fromCurrency} в ${toCurrency === 'STARS' || toCurrency === 'CAT' ? Math.floor(result) : formatNumber(result, 6)} ${toCurrency}? Комиссия: ${formatNumber(fee, 6)} ${fromCurrency}`;
     
     showConfirmModal(confirmMessage, () => {
         console.log('Начинаем выполнение конвертации...');
         
         // ===== 7. ВЫПОЛНЕНИЕ КОНВЕРТАЦИИ С ТОЧНОЙ АРИФМЕТИКОЙ =====
         try {
-            // 7.1. Вычитаем сумму с округлением до 8 знаков
+            // 7.1. Вычитаем сумму с использованием защищенной функции
             const oldFromBalance = parseFloat(state.balances[fromCurrency].toFixed(8));
-            const newFromBalance = parseFloat((oldFromBalance - finalAmount).toFixed(8));
+            const newFromBalance = safeSubtract(oldFromBalance, finalAmount);
             
-            console.log('Вычитаем:', {
-                old: oldFromBalance,
-                amount: finalAmount,
-                new: newFromBalance
-            });
-            
-            // Проверяем, чтобы баланс не ушел в минус
-            if (newFromBalance < -0.000001) {
-                showNotification('Ошибка: баланс не может быть отрицательным', 'error');
+            // Проверяем, что операция прошла успешно
+            if (newFromBalance === oldFromBalance) {
+                showNotification('Ошибка при списании средств', 'error');
                 return;
             }
             
             state.balances[fromCurrency] = Math.max(0, newFromBalance);
             
-            // 7.2. Добавляем результат
-            const oldToBalance = parseFloat(state.balances[toCurrency].toFixed(8));
-            const newToBalance = parseFloat((oldToBalance + result).toFixed(8));
-            
-            console.log('Добавляем:', {
-                old: oldToBalance,
-                result: result,
-                new: newToBalance
+            console.log('Вычитание завершено:', {
+                old: oldFromBalance,
+                amount: finalAmount,
+                new: state.balances[fromCurrency]
             });
             
+            // 7.2. Добавляем результат с использованием защищенной функции
+            const oldToBalance = parseFloat(state.balances[toCurrency].toFixed(8));
+            const newToBalance = safeAdd(oldToBalance, result);
+            
             state.balances[toCurrency] = newToBalance;
+            
+            console.log('Добавление завершено:', {
+                old: oldToBalance,
+                result: result,
+                new: state.balances[toCurrency]
+            });
             
             // 7.3. Обработка комиссии
             if (state.isAdmin) {
                 // Администратору комиссия возвращается
-                const adminBonus = parseFloat((state.balances[fromCurrency] + fee).toFixed(8));
-                state.balances[fromCurrency] = adminBonus;
+                state.balances[fromCurrency] = safeAdd(state.balances[fromCurrency], fee);
             } else {
                 // Обычному пользователю комиссия уходит администратору
                 const commissionInRub = parseFloat((fee * (state.exchangeRates[fromCurrency] || 1)).toFixed(2));
@@ -8030,14 +8625,31 @@ function formatNumber(num, decimals = 2) {
             }
         }
         // Функция для безопасного вычитания с плавающими числами
-function safeSubtract(a, b) {
-    const result = parseFloat((a - b).toFixed(8));
-    return Math.max(0, result); // Гарантируем неотрицательный результат
+// Защищенная функция для вычитания с проверкой
+function safeSubtract(balance, amount) {
+    // Округляем до 8 знаков для избежания погрешности
+    const balanceFixed = parseFloat(balance.toFixed(8));
+    const amountFixed = parseFloat(amount.toFixed(8));
+    const result = parseFloat((balanceFixed - amountFixed).toFixed(8));
+    
+    // Гарантируем, что результат не отрицательный
+    if (result < 0) {
+        console.error('Ошибка: попытка уйти в отрицательный баланс!', {
+            balance: balanceFixed,
+            amount: amountFixed,
+            result: result
+        });
+        return balanceFixed; // Возвращаем старый баланс
+    }
+    
+    return result;
 }
 
-function safeAdd(a, b) {
-    const result = parseFloat((a + b).toFixed(8));
-    return Math.max(0, result);
+// Защищенная функция для сложения
+function safeAdd(balance, amount) {
+    const balanceFixed = parseFloat(balance.toFixed(8));
+    const amountFixed = parseFloat(amount.toFixed(8));
+    return parseFloat((balanceFixed + amountFixed).toFixed(8));
 }
 
 // Используйте эти функции в расчетах:
@@ -8207,6 +8819,1535 @@ function blockCurrencySwitching(block) {
     
     console.log(`Смена валют ${block ? 'заблокирована' : 'разблокирована'}`);
 }
+// ==================== ДАННЫЕ ДЛЯ FRAGMENT ====================
+
+// Ники для покупки/продажи
+const nickData = [
+    { id: 1, name: '@awel', basePrice: 25000, currentPrice: 25000, owned: false, change: 0, availability: 5, isPremium: false },
+    { id: 2, name: '@angry', basePrice: 30000, currentPrice: 30000, owned: false, change: 0, availability: 5, isPremium: false },
+    { id: 3, name: '@KOCMOC', basePrice: 150000, currentPrice: 150000, owned: false, change: 0, availability: 1, isPremium: true },
+    { id: 4, name: '@good', basePrice: 35000, currentPrice: 35000, owned: false, change: 0, availability: 5, isPremium: false },
+    { id: 5, name: '@team', basePrice: 40000, currentPrice: 40000, owned: false, change: 0, availability: 5, isPremium: false },
+    { id: 6, name: '@love', basePrice: 45000, currentPrice: 45000, owned: false, change: 0, availability: 5, isPremium: false },
+    { id: 7, name: '@food', basePrice: 30000, currentPrice: 30000, owned: false, change: 0, availability: 5, isPremium: false },
+    { id: 8, name: '@KOT', basePrice: 50000, currentPrice: 50000, owned: false, change: 0, availability: 5, isPremium: false },
+    { id: 9, name: '@TOPT', basePrice: 55000, currentPrice: 55000, owned: false, change: 0, availability: 5, isPremium: false },
+    { id: 10, name: '@game', basePrice: 35000, currentPrice: 35000, owned: false, change: 0, availability: 5, isPremium: false },
+    { id: 11, name: '@YTKA_N_HOTA', basePrice: 60000, currentPrice: 60000, owned: false, change: 0, availability: 5, isPremium: false },
+    { id: 12, name: '@always', basePrice: 40000, currentPrice: 40000, owned: false, change: 0, availability: 5, isPremium: false },
+    { id: 13, name: '@COK', basePrice: 45000, currentPrice: 45000, owned: false, change: 0, availability: 5, isPremium: false },
+    { id: 14, name: '@camera', basePrice: 35000, currentPrice: 35000, owned: false, change: 0, availability: 5, isPremium: false },
+    { id: 15, name: '@english', basePrice: 40000, currentPrice: 40000, owned: false, change: 0, availability: 5, isPremium: false }
+];
+
+// Рынок NFT
+const fragmentMarket = {
+    nfts: [], // Будет заполняться динамически из улучшенных NFT пользователей
+    saleTimers: {} // Таймеры для продажи NFT
+};
+
+// Состояние Fragment
+// Обновите состояние Fragment в начале файла:
+state.fragment = {
+    purchasedNicks: [],
+    originalNick: state.user ? state.user.username : 'user',
+    currentNick: state.user ? state.user.username : 'user',
+    nickPrices: {},
+    marketNFTs: [],
+    sellingNFTs: {},
+    failedSales: {} // Новое: отслеживание неудачных продаж {nftId: count}
+};
+
+// ==================== ИНИЦИАЛИЗАЦИЯ FRAGMENT ====================
+
+// Инициализация вкладки Fragment
+// Инициализация вкладки Fragment - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// Инициализация вкладки Fragment - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// Обновление селектора NFT для продажи
+function updateFragmentNFTSelector() {
+    const selector = document.getElementById('fragment-sell-nft-selector');
+    if (!selector) return;
+    
+    selector.innerHTML = '';
+    
+    // Находим все улучшенные NFT пользователя
+    const upgradedNFTs = state.nfts.filter(nft => 
+        nft.owned > 0 && nft.upgraded && nft.upgraded.length > 0
+    );
+    
+    if (upgradedNFTs.length === 0) {
+        selector.innerHTML = '<div style="text-align: center; padding: 40px; color: #AAAAAA; grid-column: 1 / -1;">У вас нет улучшенных NFT для продажи</div>';
+        document.getElementById('btn-sell-fragment-nft').disabled = true;
+        return;
+    }
+    
+    upgradedNFTs.forEach(nft => {
+        const upgrade = nft.upgraded[0];
+        const isSelling = state.fragment.sellingNFTs[nft.id];
+        
+        // Получаем failedCount правильно
+        const failedCount = state.fragment.failedSales ? (state.fragment.failedSales[nft.id] || 0) : 0;
+        
+        const nftItem = document.createElement('div');
+        nftItem.className = `fragment-nft-item ${isSelling ? 'selected' : ''}`;
+        nftItem.setAttribute('data-nft-id', nft.id);
+        
+        // Цвет рамки в зависимости от количества неудач
+        if (failedCount === 1) {
+            nftItem.style.border = '2px solid #FFD700';
+            nftItem.classList.add('warning');
+        } else if (failedCount >= 2) {
+            nftItem.style.border = '2px solid var(--danger)';
+            nftItem.classList.add('danger');
+            
+            // Добавляем предупреждение о сжигании
+            const burnWarning = document.createElement('div');
+            burnWarning.className = 'burn-warning';
+            burnWarning.textContent = 'ГОРИТ!';
+            nftItem.appendChild(burnWarning);
+        }
+        
+        nftItem.innerHTML = `
+            <div class="fragment-nft-emoji" style="background: ${getColorFromClass(upgrade.colorClass)};">
+                ${nft.emoji}
+            </div>
+            <div style="font-weight: bold; margin-top: 8px;">${nft.name}</div>
+            <div class="fragment-nft-rarity ${getRarityClass(upgrade.rarity)}">
+                ${upgrade.rarity.toUpperCase()}
+            </div>
+            <div style="font-size: 0.9rem; color: #AAAAAA; margin-top: 5px;">
+                Цена: ${formatNumber(upgrade.price)} STARS
+            </div>
+            ${failedCount > 0 ? 
+                `<div style="font-size: 0.8rem; margin-top: 5px; padding: 2px 6px; border-radius: 8px; background: ${failedCount >= 2 ? 'rgba(255, 68, 68, 0.2)' : 'rgba(255, 200, 0, 0.2)'}; color: ${failedCount >= 2 ? 'var(--danger)' : '#FFD700'};">
+                    Неудач: ${failedCount}/2
+                </div>` : 
+                ''
+            }
+            ${isSelling ? 
+                '<div style="color: var(--warning); font-size: 0.8rem; margin-top: 5px;">На продаже</div>' : 
+                ''
+            }
+        `;
+        
+// В обработчике клика по NFT добавьте:
+nftItem.addEventListener('click', function() {
+    if (isSelling) return;
+    
+    document.querySelectorAll('.fragment-nft-item').forEach(item => item.classList.remove('selected'));
+    this.classList.add('selected');
+    
+    // Устанавливаем максимальную цену продажи
+    updateMaxSellPriceForNFT(nft.id);
+    
+    // Устанавливаем рекомендуемую цену (рыночную * 1.1)
+    const recommendedPrice = Math.floor(upgrade.price * 1.1);
+    document.getElementById('fragment-sell-price').value = recommendedPrice;
+    document.getElementById('fragment-sell-price').placeholder = `Рекомендуется: ${formatNumber(recommendedPrice)}`;
+    
+    // Обновляем информацию о шансе
+    updateSellChanceInfo();
+    
+    document.getElementById('btn-sell-fragment-nft').disabled = false;
+});
+        
+        selector.appendChild(nftItem);
+    });
+    
+    // Автовыбор первого NFT если не выбран
+    const firstNFT = selector.querySelector('.fragment-nft-item:not(.selected)');
+    if (firstNFT) {
+        firstNFT.click();
+    }
+    
+    // Обновляем информацию о шансе
+    updateSellChanceInfo();
+}
+function initFragmentTab() {
+    console.log('Инициализация Fragment...');
+    
+    // Инициализация данных ников
+    initNicksData();
+    
+    // Инициализация вкладок Fragment
+    initFragmentTabs();
+    
+    // Инициализация обработчиков
+    initFragmentHandlers();
+    
+    // Загрузка данных пользователя
+    loadFragmentData();
+    
+    // Инициализируем failedSales если его нет
+    if (!state.fragment.failedSales) {
+        state.fragment.failedSales = {};
+        console.log('Инициализирован failedSales');
+    }
+    
+    // Обновление UI
+    updateFragmentUI();
+    
+    console.log('Fragment инициализирован');
+}
+// Инициализация данных ников
+function initNicksData() {
+    // Инициализируем динамические цены
+    nickData.forEach(nick => {
+        state.fragment.nickPrices[nick.id] = nick.currentPrice;
+    });
+}
+
+// Инициализация вкладок Fragment
+function initFragmentTabs() {
+    const fragmentTabs = document.querySelectorAll('.fragment-tab');
+    
+    fragmentTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const fragmentTab = this.getAttribute('data-fragment-tab');
+            
+            fragmentTabs.forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.fragment-content').forEach(c => c.classList.remove('active'));
+            
+            this.classList.add('active');
+            document.getElementById(`fragment-${fragmentTab}`).classList.add('active');
+            
+            if (fragmentTab === 'nicks') {
+                updateNicksUI();
+            } else if (fragmentTab === 'nft-market') {
+                updateFragmentNFTMarket();
+            }
+        });
+    });
+}
+
+// Инициализация обработчиков
+// Инициализация обработчиков Fragment - ИСПРАВЛЕННАЯ ВЕРСИЯ
+function initFragmentHandlers() {
+    console.log('Инициализация обработчиков Fragment...');
+    
+    // Удаляем старые обработчики если есть
+    const sellNickBtn = document.getElementById('btn-sell-nick');
+    const oldSellHandler = sellNickBtn._sellHandler;
+    if (oldSellHandler) {
+        sellNickBtn.removeEventListener('click', oldSellHandler);
+    }
+    
+    // Устанавливаем новый обработчик продажи ника
+    const newSellHandler = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Клик по продаже ника');
+        sellNick();
+    };
+    
+    sellNickBtn.addEventListener('click', newSellHandler);
+    sellNickBtn._sellHandler = newSellHandler;
+    
+    // Обработчик продажи NFT на рынке
+    const sellFragmentBtn = document.getElementById('btn-sell-fragment-nft');
+    const oldSellNFTHandler = sellFragmentBtn._sellNFTHandler;
+    if (oldSellNFTHandler) {
+        sellFragmentBtn.removeEventListener('click', oldSellNFTHandler);
+    }
+    
+    const newSellNFTHandler = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Клик по продаже NFT на Fragment');
+        sellNFTOnFragment();
+    };
+    
+    sellFragmentBtn.addEventListener('click', newSellNFTHandler);
+    sellFragmentBtn._sellNFTHandler = newSellNFTHandler;
+    
+    // Обработчик изменения цены для автоматического обновления шансов
+    const priceInput = document.getElementById('fragment-sell-price');
+    if (priceInput) {
+        priceInput.addEventListener('input', function() {
+            // Обновляем максимальную цену
+            updateMaxSellPrice();
+            
+            // Обновляем информацию о шансах с учетом новой цены
+            setTimeout(() => {
+                updateSellChanceInfo();
+            }, 100);
+        });
+    }
+    
+    console.log('Обработчики Fragment инициализированы');
+    
+}
+
+// Загрузка данных Fragment
+// Загрузка данных Fragment - ОБНОВЛЕННАЯ ВЕРСИЯ
+function loadFragmentData() {
+    if (!state.user) return;
+    
+    const fragmentData = localStorage.getItem(`fragmentData_${state.user.username}`);
+    if (fragmentData) {
+        try {
+            const parsedData = JSON.parse(fragmentData);
+            
+            if (parsedData.purchasedNicks) {
+                state.fragment.purchasedNicks = parsedData.purchasedNicks;
+            }
+            
+            if (parsedData.originalNick) {
+                state.fragment.originalNick = parsedData.originalNick;
+            }
+            
+            if (parsedData.currentNick) {
+                state.fragment.currentNick = parsedData.currentNick;
+            }
+            
+            if (parsedData.nickPrices) {
+                state.fragment.nickPrices = parsedData.nickPrices;
+            }
+            
+            if (parsedData.marketNFTs) {
+                state.fragment.marketNFTs = parsedData.marketNFTs;
+            }
+            
+            if (parsedData.sellingNFTs) {
+                state.fragment.sellingNFTs = parsedData.sellingNFTs;
+            }
+            
+            if (parsedData.failedSales) {
+                state.fragment.failedSales = parsedData.failedSales;
+            }
+            
+            console.log('Данные Fragment загружены, счетчики неудач:', Object.keys(state.fragment.failedSales).length);
+            
+        } catch (e) {
+            console.error('Ошибка загрузки данных Fragment:', e);
+        }
+    } else {
+        state.fragment.failedSales = {};
+        saveFragmentData();
+    }
+}
+
+// Сохранение данных Fragment
+// Сохранение данных Fragment - ОБНОВЛЕННАЯ ВЕРСИЯ
+function saveFragmentData() {
+    if (!state.user) return;
+    
+    try {
+        const fragmentData = {
+            purchasedNicks: state.fragment.purchasedNicks,
+            originalNick: state.fragment.originalNick,
+            currentNick: state.fragment.currentNick,
+            nickPrices: state.fragment.nickPrices,
+            marketNFTs: state.fragment.marketNFTs,
+            sellingNFTs: state.fragment.sellingNFTs,
+            failedSales: state.fragment.failedSales // Сохраняем счетчики неудач
+        };
+        
+        localStorage.setItem(`fragmentData_${state.user.username}`, JSON.stringify(fragmentData));
+    } catch (e) {
+        console.error('Ошибка сохранения данных Fragment:', e);
+    }
+}
+
+// ==================== ОБНОВЛЕНИЕ UI ====================
+
+// Обновление всего UI Fragment
+function updateFragmentUI() {
+    updateNicksUI();
+    updateFragmentNFTMarket();
+    updateCurrentNickDisplay();
+    updateSellNickSelector();
+    updateFragmentNFTSelector();
+}
+
+// Обновление UI ников
+function updateNicksUI() {
+    updateNicksMarket();
+    updateSellNickSelector();
+    updateCurrentNickDisplay();
+}
+
+// Обновление рынка ников
+// Обновление рынка ников - ИСПРАВЛЕННАЯ ВЕРСИЯ
+function updateNicksMarket() {
+    const nicksGrid = document.getElementById('nicks-market-grid');
+    if (!nicksGrid) return;
+    
+    // Сохраняем текущие обработчики если они есть
+    const oldButtons = nicksGrid.querySelectorAll('.btn[data-nick-id]');
+    const oldHandlers = [];
+    
+    oldButtons.forEach(btn => {
+        if (btn._buyHandler) {
+            oldHandlers.push({
+                btn: btn,
+                handler: btn._buyHandler
+            });
+        }
+    });
+    
+    nicksGrid.innerHTML = '';
+    
+    nickData.forEach(nick => {
+        const isOwned = state.fragment.purchasedNicks.some(p => p.id === nick.id);
+        const currentPrice = state.fragment.nickPrices[nick.id] || nick.currentPrice;
+        const change = ((currentPrice - nick.basePrice) / nick.basePrice) * 100;
+        
+        const nickCard = document.createElement('div');
+        nickCard.className = `nick-card ${isOwned ? 'owned' : ''} ${nick.isPremium ? 'premium' : ''}`;
+        
+        if (nick.isPremium) {
+            const badge = document.createElement('div');
+            badge.className = 'nick-badge';
+            badge.textContent = 'PREMIUM';
+            nickCard.appendChild(badge);
+        }
+        
+        let buttonText = 'Купить за ' + formatNumber(currentPrice) + ' STARS';
+        if (isOwned) {
+            buttonText = '✓ Уже куплен';
+        } else if (nick.availability <= 0) {
+            buttonText = 'Распродано';
+        }
+        
+        nickCard.innerHTML = `
+            <div class="nick-name">${nick.name}</div>
+            <div class="nick-price">${formatNumber(currentPrice)} STARS</div>
+            <div class="nick-change ${change >= 0 ? 'positive' : 'negative'}">
+                ${change >= 0 ? '↗' : '↘'} ${Math.abs(change).toFixed(1)}%
+            </div>
+            <div class="nick-availability">Доступно: ${nick.availability} шт.</div>
+            <button class="btn ${isOwned ? 'btn-outline' : (nick.availability > 0 ? '' : 'btn-outline')}" 
+                    data-nick-id="${nick.id}" 
+                    ${isOwned || nick.availability <= 0 ? 'disabled' : ''}>
+                ${buttonText}
+            </button>
+        `;
+        
+        nicksGrid.appendChild(nickCard);
+    });
+    
+    // Добавляем обработчики для кнопок покупки - ИСПРАВЛЕННАЯ ВЕРСИЯ
+    const newButtons = nicksGrid.querySelectorAll('.btn[data-nick-id]');
+    newButtons.forEach(btn => {
+        if (!btn.disabled && !btn.textContent.includes('Уже куплен')) {
+            const nickId = parseInt(btn.getAttribute('data-nick-id'));
+            
+            // Удаляем старый обработчик если есть
+            if (btn._buyHandler) {
+                btn.removeEventListener('click', btn._buyHandler);
+            }
+            
+            // Создаем новый обработчик с правильным контекстом
+            const buyHandler = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Клик по покупке ника ID:', nickId);
+                buyNick(nickId);
+            };
+            
+            btn.addEventListener('click', buyHandler);
+            btn._buyHandler = buyHandler;
+        }
+    });
+}
+
+// Обновление отображения текущего ника
+function updateCurrentNickDisplay() {
+    const currentNickDisplay = document.getElementById('current-nick-display');
+    const currentNickAvatar = document.getElementById('current-nick-avatar');
+    const additionalNicksDisplay = document.getElementById('additional-nicks-display');
+    
+    if (!currentNickDisplay || !currentNickAvatar || !additionalNicksDisplay) return;
+    
+    // Устанавливаем текущий ник
+    currentNickDisplay.textContent = state.fragment.currentNick;
+    currentNickAvatar.textContent = state.fragment.currentNick.charAt(0).toUpperCase();
+    
+    // Показываем дополнительные ники
+    const otherNicks = state.fragment.purchasedNicks.filter(nick => 
+        nick.name !== state.fragment.currentNick
+    );
+    
+    if (otherNicks.length > 0) {
+        const nickNames = otherNicks.map(nick => nick.name).join(', ');
+        additionalNicksDisplay.innerHTML = `Также: <span style="color: var(--primary);">${nickNames}</span>`;
+    } else {
+        additionalNicksDisplay.innerHTML = 'Нет дополнительных ников';
+    }
+}
+
+// Обновление селектора продажи ников
+function updateSellNickSelector() {
+    const sellNickSelect = document.getElementById('sell-nick-select');
+    const sellNickPrice = document.getElementById('sell-nick-price');
+    
+    if (!sellNickSelect || !sellNickPrice) return;
+    
+    sellNickSelect.innerHTML = '';
+    
+    // Добавляем купленные ники в селектор
+    state.fragment.purchasedNicks.forEach(nick => {
+        const option = document.createElement('option');
+        option.value = nick.id;
+        option.textContent = `${nick.name} (куплен за ${formatNumber(nick.purchasePrice)} STARS)`;
+        sellNickSelect.appendChild(option);
+    });
+    
+    // Если нет ников для продажи
+    if (state.fragment.purchasedNicks.length === 0) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'Нет ников для продажи';
+        option.disabled = true;
+        sellNickSelect.appendChild(option);
+        sellNickPrice.value = '0 TON';
+        document.getElementById('btn-sell-nick').disabled = true;
+        return;
+    }
+    
+    document.getElementById('btn-sell-nick').disabled = false;
+    
+    // Обновляем цену при изменении выбора
+    sellNickSelect.addEventListener('change', function() {
+        updateSellNickPrice();
+    });
+    
+    // Устанавливаем начальную цену
+    updateSellNickPrice();
+}
+
+// Обновление цены продажи ника
+// Обновление цены продажи ника - ИСПРАВЛЕННАЯ ВЕРСИЯ
+function updateSellNickPrice() {
+    const sellNickSelect = document.getElementById('sell-nick-select');
+    const sellNickPrice = document.getElementById('sell-nick-price');
+    
+    if (!sellNickSelect || !sellNickPrice) return;
+    
+    const selectedNickId = parseInt(sellNickSelect.value);
+    if (!selectedNickId) return;
+    
+    const nick = state.fragment.purchasedNicks.find(n => n.id === selectedNickId);
+    if (!nick) return;
+    
+    // ИСПРАВЛЕНИЕ БАГА 1: Правильная конвертация STARS → TON
+    // Используем текущий курс обмена
+    const starsToTonRate = state.exchangeRates.STARS / state.exchangeRates.TON;
+    
+    // Цена продажи = цена покупки в STARS * курс STARS/TON * 0.95 (5% комиссия)
+    const sellPriceInStars = nick.purchasePrice;
+    const sellPriceInTon = Math.floor(sellPriceInStars * starsToTonRate * 0.95);
+    
+    sellNickPrice.value = formatNumber(sellPriceInTon) + ' TON';
+}
+
+// ==================== ОБРАБОТКА НИКОВ ====================
+
+// Покупка ника
+// Покупка ника - ИСПРАВЛЕННАЯ ВЕРСИЯ
+function buyNick(nickId) {
+    console.log('Начало покупки ника ID:', nickId);
+    
+    const nick = nickData.find(n => n.id === nickId);
+    if (!nick) {
+        console.error('Ник не найден:', nickId);
+        return;
+    }
+    
+    const currentPrice = state.fragment.nickPrices[nickId] || nick.currentPrice;
+    
+    // Проверяем, не куплен ли уже этот ник
+    const isAlreadyOwned = state.fragment.purchasedNicks.some(n => n.id === nickId);
+    if (isAlreadyOwned) {
+        showNotification('Этот ник уже куплен!', 'error');
+        return;
+    }
+    
+    // Проверяем баланс STARS с запасом
+    const currentBalance = parseFloat(state.balances.STARS.toFixed(8));
+    const priceFixed = parseFloat(currentPrice.toFixed(8));
+    
+    if (currentBalance + 0.000001 < priceFixed) { // Добавляем небольшой запас
+        showNotification(`Недостаточно STARS. Нужно: ${formatNumber(currentPrice)} STARS, есть: ${formatNumber(currentBalance)}`, 'error');
+        return;
+    }
+    
+    // Проверяем доступность
+    if (nick.availability <= 0) {
+        showNotification('Этот ник больше не доступен для покупки', 'error');
+        return;
+    }
+    
+    showConfirmModal(
+        `Вы уверены, что хотите купить ник ${nick.name} за ${formatNumber(currentPrice)} STARS?`,
+        () => {
+            console.log('Подтверждение покупки ника:', nick.name);
+            
+            // ИСПРАВЛЕНИЕ: Используем защищенное вычитание
+            const oldBalance = parseFloat(state.balances.STARS.toFixed(8));
+            const newBalance = safeSubtract(oldBalance, priceFixed);
+            
+            // Проверяем, что операция прошла успешно
+            if (newBalance === oldBalance) {
+                showNotification('Ошибка: недостаточно средств после проверки', 'error');
+                return;
+            }
+            
+            state.balances.STARS = newBalance;
+            
+            // Добавляем ник в список купленных
+            state.fragment.purchasedNicks.push({
+                id: nick.id,
+                name: nick.name,
+                purchasePrice: currentPrice,
+                purchaseDate: new Date().toLocaleString('ru-RU'),
+                isPremium: nick.isPremium
+            });
+            
+            // Уменьшаем доступность
+            nick.availability--;
+            
+            // Если это первый купленный ник, делаем его текущим
+            if (state.fragment.purchasedNicks.length === 1) {
+                state.fragment.currentNick = nick.name;
+            }
+            
+            // Добавляем в историю транзакций
+            addTransaction('nick_buy', nick.name, -currentPrice, null, 'STARS');
+            
+            // Сохраняем данные
+            saveFragmentData();
+            saveUserData();
+            
+            // Обновляем UI
+            updateFragmentUI();
+            updateUI();
+            
+            // Показываем уведомление
+            showNotification(`Ник ${nick.name} успешно куплен!`, 'success');
+        }
+    );
+}
+
+// Продажа ника
+// Продажа ника - ИСПРАВЛЕННАЯ ВЕРСИЯ
+function sellNick() {
+    const sellNickSelect = document.getElementById('sell-nick-select');
+    const selectedNickId = parseInt(sellNickSelect.value);
+    
+    if (!selectedNickId) {
+        showNotification('Выберите ник для продажи', 'error');
+        return;
+    }
+    
+    const nick = state.fragment.purchasedNicks.find(n => n.id === selectedNickId);
+    if (!nick) return;
+    
+    // ИСПРАВЛЕНИЕ БАГА 1: Правильный расчет цены
+    const starsToTonRate = state.exchangeRates.STARS / state.exchangeRates.TON;
+    const sellPriceInTon = Math.floor(nick.purchasePrice * starsToTonRate * 0.95);
+    
+    // Проверяем, что цена корректная
+    if (sellPriceInTon <= 0) {
+        showNotification('Ошибка расчета цены продажи', 'error');
+        return;
+    }
+    
+    showConfirmModal(
+        `Вы уверены, что хотите продать ник ${nick.name} за ${formatNumber(sellPriceInTon)} TON?`,
+        () => {
+            // Увеличиваем доступность ника
+            const originalNick = nickData.find(n => n.id === nick.id);
+            if (originalNick) {
+                originalNick.availability++;
+            }
+            
+            // Удаляем ник из купленных
+            state.fragment.purchasedNicks = state.fragment.purchasedNicks.filter(n => n.id !== nick.id);
+            
+            // Добавляем TON на баланс (ПРАВИЛЬНАЯ ЦЕНА)
+            state.balances.TON += sellPriceInTon;
+            
+            // Если продали текущий ник, меняем на другой или на оригинальный
+            if (state.fragment.currentNick === nick.name) {
+                if (state.fragment.purchasedNicks.length > 0) {
+                    state.fragment.currentNick = state.fragment.purchasedNicks[0].name;
+                } else {
+                    state.fragment.currentNick = state.fragment.originalNick;
+                }
+            }
+            
+            // Добавляем в историю транзакций
+            addTransaction('nick_sell', nick.name, sellPriceInTon, null, 'TON');
+            
+            // Сохраняем данные
+            saveFragmentData();
+            saveUserData();
+            
+            // Обновляем UI
+            updateFragmentUI();
+            updateUI();
+            
+            // Показываем уведомление
+            showNotification(`Ник ${nick.name} продан за ${formatNumber(sellPriceInTon)} TON!`, 'success');
+        }
+    );
+}
+
+// Симуляция изменения цен ников
+function startNickPriceSimulation() {
+    setInterval(() => {
+        nickData.forEach(nick => {
+            if (nick.availability <= 0) return;
+            
+            // Изменение цены от -5% до +10%
+            const change = (Math.random() * 0.15) - 0.05;
+            const currentPrice = state.fragment.nickPrices[nick.id] || nick.currentPrice;
+            const newPrice = Math.max(nick.basePrice * 0.5, currentPrice * (1 + change));
+            
+            state.fragment.nickPrices[nick.id] = Math.floor(newPrice);
+        });
+        
+        // Обновляем UI если открыта вкладка ников
+        if (document.querySelector('#fragment-nicks.fragment-content.active')) {
+            updateNicksMarket();
+        }
+        
+    }, 60000); // Каждую минуту
+}
+
+// ==================== FRAGMENT NFT РЫНОК ====================
+
+// Обновление рынка NFT Fragment
+function updateFragmentNFTMarket() {
+    updateFragmentNFTGrid();
+    updateFragmentNFTSelector();
+    updateSellChanceInfo();
+}
+
+// Обновление сетки NFT на рынке
+function updateFragmentNFTGrid() {
+    const fragmentNFTGrid = document.getElementById('fragment-nft-grid');
+    if (!fragmentNFTGrid) return;
+    
+    fragmentNFTGrid.innerHTML = '';
+    
+    // Формируем список всех улучшенных NFT на рынке
+    const allMarketNFTs = [];
+    
+    // 1. NFT от других игроков (реальные продажи)
+    state.fragment.marketNFTs.forEach(marketNFT => {
+        const nft = findNFTById(marketNFT.nftId);
+        if (nft && nft.upgraded && nft.upgraded.length > 0) {
+            const upgrade = nft.upgraded[0];
+            allMarketNFTs.push({
+                type: 'market',
+                data: marketNFT,
+                nft: nft,
+                upgrade: upgrade
+            });
+        }
+    });
+    
+    // 2. NFT, выставленные на продажу
+    for (const nftId in state.fragment.sellingNFTs) {
+        const sellingData = state.fragment.sellingNFTs[nftId];
+        const nft = findNFTById(parseInt(nftId));
+        
+        if (nft && nft.upgraded && nft.upgraded.length > 0) {
+            const upgrade = nft.upgraded[0];
+            allMarketNFTs.push({
+                type: 'selling',
+                data: sellingData,
+                nft: nft,
+                upgrade: upgrade
+            });
+        }
+    }
+    
+    if (allMarketNFTs.length === 0) {
+        fragmentNFTGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: #AAAAAA; grid-column: 1 / -1;">На рынке пока нет NFT</div>';
+        return;
+    }
+    
+    // Отображаем все NFT
+    allMarketNFTs.forEach(item => {
+        const isSelling = item.type === 'selling';
+        const marketNFTCard = document.createElement('div');
+        marketNFTCard.className = 'market-nft-card';
+        
+        const price = isSelling ? item.data.askingPrice : item.data.price;
+        const seller = isSelling ? 'Вы' : item.data.seller;
+        const status = isSelling ? 'selling' : 'available';
+        const statusText = isSelling ? 'На продаже' : 'В продаже';
+        
+        // Определяем цвет фона по редкости
+        const rarityClass = getRarityClass(item.upgrade.rarity);
+        
+        marketNFTCard.innerHTML = `
+            <div class="market-nft-image" style="background: ${getColorFromClass(item.upgrade.colorClass)};">
+                ${item.nft.emoji}
+            </div>
+            <div class="market-nft-info">
+                <div class="market-nft-name">${item.nft.name}</div>
+                <div class="market-nft-owner">Продавец: ${seller}</div>
+                <div class="market-nft-price">${formatNumber(price)} STARS</div>
+                <div class="market-nft-status ${status}">${statusText}</div>
+                <span class="nft-upgrade-indicator ${rarityClass}" style="display: inline-block; margin-bottom: 10px;">
+                    ${item.upgrade.rarity.toUpperCase()}
+                </span>
+            </div>
+            ${isSelling ? 
+                `<div class="sale-timer">Осталось: ${formatTimeRemaining(item.data.startTime)}</div>
+                <button class="btn btn-outline btn-block" data-nft-id="${item.nft.id}" data-type="cancel">Отменить продажу</button>` :
+                `<button class="btn btn-block" data-nft-id="${item.nft.id}" data-type="buy">Купить NFT</button>`
+            }
+        `;
+        
+        fragmentNFTGrid.appendChild(marketNFTCard);
+    });
+    
+    // Добавляем обработчики
+    document.querySelectorAll('#fragment-nft-grid .btn').forEach(btn => {
+        const nftId = parseInt(btn.getAttribute('data-nft-id'));
+        const actionType = btn.getAttribute('data-type');
+        
+        btn.addEventListener('click', function() {
+            if (actionType === 'buy') {
+                buyMarketNFT(nftId);
+            } else if (actionType === 'cancel') {
+                cancelNFTSale(nftId);
+            }
+        });
+    });
+}
+
+// Поиск NFT по ID
+function findNFTById(nftId) {
+    return state.nfts.find(n => n.id === nftId);
+}
+
+// Получение класса редкости
+function getRarityClass(rarity) {
+    const classes = {
+        'common': 'rarity-common',
+        'uncommon': 'rarity-uncommon',
+        'rare': 'rarity-rare',
+        'epic': 'rarity-epic',
+        'legendary': 'rarity-legendary',
+        'godlike': 'rarity-godlike'
+    };
+    return classes[rarity] || 'rarity-common';
+}
+
+// Обновление селектора NFT для продажи
+// Обновление селектора NFT для продажи - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// Обновление информации о шансе продажи - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// Обновление информации о шансе продажи - ОБНОВЛЕННАЯ С УЧЕТОМ ЦЕНЫ
+function updateSellChanceInfo() {
+    const selectedNFT = document.querySelector('.fragment-nft-item.selected');
+    if (!selectedNFT) {
+        // Устанавливаем значения по умолчанию если ничего не выбрано
+        document.getElementById('sell-chance-normal').textContent = '75%';
+        document.getElementById('sell-chance-luck').textContent = systemSettings.doubleLuckMode ? '85%' : '75%';
+        return;
+    }
+    
+    const nftId = parseInt(selectedNFT.getAttribute('data-nft-id'));
+    const nft = findNFTById(nftId);
+    
+    if (!nft) {
+        document.getElementById('sell-chance-normal').textContent = '75%';
+        document.getElementById('sell-chance-luck').textContent = systemSettings.doubleLuckMode ? '85%' : '75%';
+        return;
+    }
+    
+    // Получаем введенную цену
+    const askingPriceInput = document.getElementById('fragment-sell-price');
+    const askingPrice = askingPriceInput.value ? parseInt(askingPriceInput.value) : 0;
+    
+    // Проверяем наличие failedSales
+    const failedCount = state.fragment.failedSales ? (state.fragment.failedSales[nftId] || 0) : 0;
+    
+    // Получаем рыночную цену NFT (цена улучшения)
+    const marketPrice = nft.upgraded && nft.upgraded.length > 0 ? nft.upgraded[0].price : nft.price;
+    
+    // Рассчитываем коэффициент цены (во сколько раз выше рыночной)
+    const priceMultiplier = askingPrice > 0 ? (askingPrice / marketPrice) : 1;
+    
+    // Базовые шансы в зависимости от попыток
+    let baseChance;
+    
+    if (failedCount === 0) {
+        baseChance = 0.75; // 75% - Первая попытка
+    } else if (failedCount === 1) {
+        baseChance = 0.85; // 85% - Вторая попытка
+    } else {
+        baseChance = 0.95; // 95% - Третья попытка (последний шанс)
+    }
+    
+    // КОРРЕКЦИЯ ШАНСА В ЗАВИСИМОСТИ ОТ ЦЕНЫ:
+    // 1.0x - 1.2x рыночной цены: -0% к шансу
+    // 1.2x - 1.4x: -10% к шансу
+    // 1.4x - 1.6x: -25% к шансу
+    // 1.6x - 1.8x: -50% к шансу
+    
+    let pricePenalty = 0;
+    
+    if (priceMultiplier >= 1.6) {
+        pricePenalty = 0.50; // 50% штраф
+    } else if (priceMultiplier >= 1.4) {
+        pricePenalty = 0.25; // 25% штраф
+    } else if (priceMultiplier >= 1.2) {
+        pricePenalty = 0.10; // 10% штраф
+    }
+    
+    // Итоговый шанс с учетом штрафа за цену
+    let finalChance = Math.max(0.05, baseChance - pricePenalty); // Минимальный шанс 5%
+    
+    // Шанс с 2x удачей (увеличиваем на 10%)
+    let finalChanceWithLuck = Math.min(0.95, finalChance + 0.10); // Максимальный шанс 95%
+    
+    // Округляем для отображения
+    const normalChance = Math.round(finalChance * 100);
+    const luckChance = Math.round(finalChanceWithLuck * 100);
+    
+    document.getElementById('sell-chance-normal').textContent = `${normalChance}%`;
+    document.getElementById('sell-chance-luck').textContent = systemSettings.doubleLuckMode ? `${luckChance}%` : `${normalChance}%`;
+    
+    // Обновляем информацию о цене
+    updatePriceInfo(marketPrice, askingPrice, priceMultiplier);
+    
+    // Показываем предупреждение если это последняя попытка
+    updateWarningInfo(failedCount, priceMultiplier);
+}
+
+// Обновление информации о цене
+// Обновление информации о цене с визуализацией
+function updatePriceInfo(marketPrice, askingPrice, priceMultiplier) {
+    const priceInfoElement = document.getElementById('price-info');
+    if (!priceInfoElement) {
+        const sellPriceDiv = document.querySelector('#fragment-nft-market .form-group:nth-child(2)');
+        if (sellPriceDiv) {
+            const info = document.createElement('div');
+            info.id = 'price-info';
+            sellPriceDiv.appendChild(info);
+        } else {
+            return;
+        }
+    }
+    
+    const priceInfo = document.getElementById('price-info');
+    if (!priceInfo) return;
+    
+    // Рассчитываем примерный шанс для визуализации
+    let estimatedChance = 75;
+    let chanceClass = 'chance-high';
+    let infoClass = 'price-info-normal';
+    let priceStatus = 'НОРМАЛЬНАЯ ЦЕНА';
+    let color = 'var(--primary)';
+    
+    if (priceMultiplier >= 1.6) {
+        estimatedChance = 25;
+        chanceClass = 'chance-very-low';
+        infoClass = 'price-info-danger';
+        priceStatus = 'ОЧЕНЬ ВЫСОКАЯ ЦЕНА (-50% к шансу)';
+        color = 'var(--danger)';
+    } else if (priceMultiplier >= 1.4) {
+        estimatedChance = 50;
+        chanceClass = 'chance-low';
+        infoClass = 'price-info-warning';
+        priceStatus = 'ВЫСОКАЯ ЦЕНА (-25% к шансу)';
+        color = '#FF9800';
+    } else if (priceMultiplier >= 1.2) {
+        estimatedChance = 65;
+        chanceClass = 'chance-medium';
+        infoClass = 'price-info-warning';
+        priceStatus = 'ПОВЫШЕННАЯ ЦЕНА (-10% к шансу)';
+        color = '#FFD700';
+    } else if (askingPrice > 0 && priceMultiplier < 1.0) {
+        estimatedChance = 90;
+        chanceClass = 'chance-high';
+        infoClass = 'price-info-success';
+        priceStatus = 'НИЗКАЯ ЦЕНА (+5% к шансу)';
+        color = 'var(--success)';
+    }
+    
+    priceInfo.innerHTML = `
+        <div class="price-info-container ${infoClass}">
+            <div style="font-weight: bold; margin-bottom: 5px;">
+                ${priceStatus}
+            </div>
+            <div style="color: ${color}; margin-bottom: 5px;">
+                Коэффициент цены: ${priceMultiplier.toFixed(2)}x
+            </div>
+            <div class="chance-indicator">
+                <div class="chance-bar">
+                    <div class="chance-fill ${chanceClass}" style="width: ${estimatedChance}%"></div>
+                </div>
+                <div style="font-size: 0.8rem; color: #AAAAAA;">
+                    ≈${estimatedChance}% шанс
+                </div>
+            </div>
+            <div style="font-size: 0.8rem; color: #AAAAAA; margin-top: 5px;">
+                Рыночная: ${formatNumber(marketPrice)} STARS<br>
+                Ваша: ${formatNumber(askingPrice)} STARS
+            </div>
+        </div>
+    `;
+}
+
+// Обновление информации с предупреждениями
+function updateWarningInfo(failedCount, priceMultiplier) {
+    const warningElement = document.getElementById('sell-warning');
+    if (!warningElement) {
+        const sellChanceDiv = document.querySelector('#fragment-nft-market .form-group:nth-child(3)');
+        if (sellChanceDiv) {
+            const warning = document.createElement('div');
+            warning.id = 'sell-warning';
+            warning.style.marginTop = '10px';
+            sellChanceDiv.appendChild(warning);
+        }
+    }
+    
+    const warningEl = document.getElementById('sell-warning');
+    if (!warningEl) return;
+    
+    let warnings = [];
+    
+    if (failedCount >= 2) {
+        warnings.push(`<div style="background: rgba(255, 68, 68, 0.2); padding: 8px; border-radius: 8px; color: var(--danger); font-size: 0.9rem; margin-bottom: 5px;">
+            ⚠️ <strong>ПОСЛЕДНИЙ ШАНС!</strong> Если NFT не продастся в этот раз - он сгорит!
+        </div>`);
+    } else if (failedCount === 1) {
+        warnings.push(`<div style="background: rgba(255, 200, 0, 0.2); padding: 8px; border-radius: 8px; color: #FFD700; font-size: 0.9rem; margin-bottom: 5px;">
+            ⚠️ <strong>Вторая попытка!</strong> Следующая неудачная продажа приведет к сжиганию NFT
+        </div>`);
+    }
+    
+    if (priceMultiplier >= 1.6) {
+        warnings.push(`<div style="background: rgba(255, 68, 68, 0.2); padding: 8px; border-radius: 8px; color: var(--danger); font-size: 0.9rem; margin-bottom: 5px;">
+            ⚠️ <strong>ОЧЕНЬ ВЫСОКАЯ ЦЕНА!</strong> Шанс продажи снижен на 50%
+        </div>`);
+    } else if (priceMultiplier >= 1.4) {
+        warnings.push(`<div style="background: rgba(255, 152, 0, 0.2); padding: 8px; border-radius: 8px; color: #FF9800; font-size: 0.9rem; margin-bottom: 5px;">
+            ⚠️ <strong>ВЫСОКАЯ ЦЕНА!</strong> Шанс продажи снижен на 25%
+        </div>`);
+    } else if (priceMultiplier >= 1.2) {
+        warnings.push(`<div style="background: rgba(255, 215, 0, 0.2); padding: 8px; border-radius: 8px; color: #FFD700; font-size: 0.9rem; margin-bottom: 5px;">
+            ⚠️ <strong>ПОВЫШЕННАЯ ЦЕНА!</strong> Шанс продажи снижен на 10%
+        </div>`);
+    }
+    
+    warningEl.innerHTML = warnings.join('');
+}
+
+// Обновление максимальной цены продажи для выбранного NFT
+function updateMaxSellPriceForNFT(nftId) {
+    const nft = findNFTById(nftId);
+    if (!nft || !nft.upgraded || nft.upgraded.length === 0) return;
+    
+    const upgrade = nft.upgraded[0];
+    const maxPrice = Math.floor(upgrade.price * 1.8);
+    
+    document.getElementById('max-sell-price').textContent = formatNumber(maxPrice);
+    document.getElementById('fragment-sell-price').max = maxPrice;
+    document.getElementById('fragment-sell-price').placeholder = `Макс: ${formatNumber(maxPrice)}`;
+}
+
+// Обновление максимальной цены продажи
+function updateMaxSellPrice() {
+    const sellPriceInput = document.getElementById('fragment-sell-price');
+    const maxPrice = parseInt(document.getElementById('fragment-sell-price').max);
+    const currentPrice = parseInt(sellPriceInput.value);
+    
+    if (currentPrice > maxPrice) {
+        sellPriceInput.value = maxPrice;
+    }
+}
+
+// Обновление информации о шансе продажи
+// Обновление информации о шансе продажи - ИСПРАВЛЕННАЯ ВЕРСИЯ
+function updateSellChanceInfo() {
+    const selectedNFT = document.querySelector('.fragment-nft-item.selected');
+    if (!selectedNFT) return;
+    
+    const nftId = parseInt(selectedNFT.getAttribute('data-nft-id'));
+    const nft = findNFTById(nftId);
+    
+    if (!nft) return;
+    
+    // Проверяем количество неудачных продаж
+    const failedCount = state.fragment.failedSales[nftId] || 0;
+    
+    // Базовые шансы
+    let normalChance, luckChance;
+    
+    // УВЕЛИЧЕННЫЕ ШАНСЫ:
+    // 1 попытка: 75% (раньше 45%)
+    // 2 попытка: 85% (если первая неудачная)
+    // 3 попытка: 95% (если две неудачные)
+    
+    if (failedCount === 0) {
+        normalChance = 75; // Первая попытка
+        luckChance = 85;   // С 2x удачей
+    } else if (failedCount === 1) {
+        normalChance = 85; // Вторая попытка
+        luckChance = 90;   // С 2x удачей
+    } else {
+        normalChance = 95; // Третья попытка (последний шанс)
+        luckChance = 98;   // С 2x удачей
+    }
+    
+    // Если режим 2x удачи не активен, показываем нормальный шанс
+    if (!systemSettings.doubleLuckMode) {
+        luckChance = normalChance;
+    }
+    
+    document.getElementById('sell-chance-normal').textContent = `${normalChance}%`;
+    document.getElementById('sell-chance-luck').textContent = `${luckChance}%`;
+    
+    // Показываем предупреждение если это последняя попытка
+    const warningElement = document.getElementById('sell-warning');
+    if (!warningElement) {
+        const sellChanceDiv = document.querySelector('#fragment-nft-market .form-group:nth-child(3)');
+        if (sellChanceDiv) {
+            const warning = document.createElement('div');
+            warning.id = 'sell-warning';
+            warning.style.marginTop = '10px';
+            sellChanceDiv.appendChild(warning);
+        }
+    }
+    
+    if (failedCount >= 2) {
+        document.getElementById('sell-warning').innerHTML = `
+            <div style="background: rgba(255, 68, 68, 0.2); padding: 12px; border-radius: 8px; color: var(--danger); font-size: 0.9rem;">
+                ⚠️ <strong>ПОСЛЕДНИЙ ШАНС!</strong> Если NFT не продастся в этот раз - он сгорит!
+            </div>
+        `;
+    } else if (failedCount === 1) {
+        document.getElementById('sell-warning').innerHTML = `
+            <div style="background: rgba(255, 200, 0, 0.2); padding: 12px; border-radius: 8px; color: #FFD700; font-size: 0.9rem;">
+                ⚠️ <strong>Вторая попытка!</strong> Следующая неудачная продажа приведет к сжиганию NFT
+            </div>
+        `;
+    } else {
+        document.getElementById('sell-warning').innerHTML = '';
+    }
+}
+// ==================== ОБРАБОТКА NFT НА РЫНКЕ ====================
+
+// Покупка NFT с рынка
+function buyMarketNFT(nftId) {
+    const marketNFT = state.fragment.marketNFTs.find(n => n.nftId === nftId);
+    if (!marketNFT) return;
+    
+    const nft = findNFTById(nftId);
+    if (!nft) return;
+    
+    const price = marketNFT.price;
+    
+    // Проверяем баланс STARS
+    if (state.balances.STARS < price) {
+        showNotification(`Недостаточно STARS. Нужно: ${formatNumber(price)} STARS`, 'error');
+        return;
+    }
+    
+    showConfirmModal(
+        `Вы уверены, что хотите купить NFT "${nft.name}" за ${formatNumber(price)} STARS?`,
+        () => {
+            // Списание STARS
+            state.balances.STARS -= price;
+            
+            // Добавляем NFT в инвентарь
+            nft.owned++;
+            nft.upgraded.push({...marketNFT.upgrade});
+            
+            // Удаляем NFT с рынка
+            state.fragment.marketNFTs = state.fragment.marketNFTs.filter(n => n.nftId !== nftId);
+            
+            // Добавляем в историю транзакций
+            addTransaction('fragment_nft_buy', `NFT ${nft.name}`, -price, null, 'STARS');
+            
+            // Сохраняем данные
+            saveFragmentData();
+            saveUserData();
+            
+            // Обновляем UI
+            updateFragmentUI();
+            updateUI();
+            
+            // Показываем уведомление
+            showNotification(`NFT "${nft.name}" успешно куплен!`, 'success');
+        }
+    );
+}
+
+// Продажа NFT на рынке Fragment
+// Продажа NFT на рынке Fragment - ИСПРАВЛЕННАЯ ВЕРСИЯ
+function sellNFTOnFragment() {
+    console.log('Начало продажи NFT на Fragment');
+    
+    const selectedNFT = document.querySelector('.fragment-nft-item.selected');
+    if (!selectedNFT) {
+        showNotification('Выберите NFT для продажи', 'error');
+        return;
+    }
+    
+    const nftId = parseInt(selectedNFT.getAttribute('data-nft-id'));
+    const nft = findNFTById(nftId);
+    
+    if (!nft || nft.owned <= 0 || !nft.upgraded || nft.upgraded.length === 0) {
+        showNotification('NFT не найден или не улучшен', 'error');
+        return;
+    }
+    
+    const askingPrice = parseInt(document.getElementById('fragment-sell-price').value);
+    const maxPrice = parseInt(document.getElementById('fragment-sell-price').max);
+    
+    if (!askingPrice || askingPrice <= 0) {
+        showNotification('Введите корректную цену', 'error');
+        return;
+    }
+    
+    if (askingPrice > maxPrice) {
+        showNotification(`Цена не может превышать ${formatNumber(maxPrice)} STARS`, 'error');
+        return;
+    }
+    
+    const upgrade = nft.upgraded[0];
+    
+    // Проверяем, не продается ли уже этот NFT
+    if (state.fragment.sellingNFTs[nftId]) {
+        showNotification('Этот NFT уже выставлен на продажу', 'error');
+        return;
+    }
+    
+    showConfirmModal(
+        `Выставить NFT "${nft.name}" на продажу за ${formatNumber(askingPrice)} STARS на 2 минуты?`,
+        () => {
+            console.log('Подтверждение продажи NFT:', nft.name);
+            
+            const startTime = Date.now();
+            const saleId = `sale_${nftId}_${startTime}`;
+            
+            // Добавляем NFT в список продающихся
+            state.fragment.sellingNFTs[nftId] = {
+                nftId: nftId,
+                askingPrice: askingPrice,
+                startTime: startTime,
+                saleId: saleId,
+                upgrade: {...upgrade},
+                seller: state.user.username
+            };
+            
+            // Уменьшаем количество NFT у пользователя (временно)
+            nft.owned--;
+            nft.upgraded.shift();
+            
+            // Запускаем таймер продажи
+            startNFTSaleTimer(nftId, askingPrice);
+            
+            // Сохраняем данные
+            saveFragmentData();
+            saveUserData();
+            
+            // Обновляем UI
+            updateFragmentUI();
+            updateUI();
+            
+            // Показываем уведомление
+            showNotification(`NFT выставлен на продажу! Продажа займет 2 минуты.`, 'success');
+        }
+    );
+}
+
+// Обработка результата продажи NFT - ОБНОВЛЕННАЯ С УЧЕТОМ ЦЕНЫ
+function processNFTSaleResult(nftId, askingPrice) {
+    console.log('Обработка результата продажи NFT ID:', nftId);
+    
+    const saleData = state.fragment.sellingNFTs[nftId];
+    if (!saleData) {
+        console.error('Данные о продаже не найдены');
+        return;
+    }
+    
+    const nft = findNFTById(nftId);
+    
+    // Проверяем наличие failedSales
+    const failedCount = state.fragment.failedSales ? (state.fragment.failedSales[nftId] || 0) : 0;
+    
+    // Получаем рыночную цену NFT
+    const marketPrice = nft.upgraded && nft.upgraded.length > 0 ? nft.upgraded[0].price : nft.price;
+    
+    // Рассчитываем коэффициент цены
+    const priceMultiplier = askingPrice / marketPrice;
+    
+    // Базовые шансы в зависимости от попыток
+    let baseChance;
+    
+    if (failedCount === 0) {
+        baseChance = 0.75; // 75% - Первая попытка
+    } else if (failedCount === 1) {
+        baseChance = 0.85; // 85% - Вторая попытка
+    } else {
+        baseChance = 0.95; // 95% - Третья попытка (последний шанс)
+    }
+    
+    // ШТРАФ ЗА ЦЕНУ:
+    let pricePenalty = 0;
+    
+    if (priceMultiplier >= 1.6) {
+        pricePenalty = 0.50; // 50% штраф
+    } else if (priceMultiplier >= 1.4) {
+        pricePenalty = 0.25; // 25% штраф
+    } else if (priceMultiplier >= 1.2) {
+        pricePenalty = 0.10; // 10% штраф
+    }
+    
+    // БОНУС ЗА НИЗКУЮ ЦЕНУ (ниже рыночной)
+    let priceBonus = 0;
+    if (priceMultiplier < 1.0) {
+        priceBonus = 0.05; // +5% за низкую цену
+    }
+    
+    // Итоговый шанс
+    let finalChance = Math.max(0.05, baseChance - pricePenalty + priceBonus);
+    
+    // Шанс с 2x удачей (увеличиваем на 10%)
+    if (systemSettings.doubleLuckMode) {
+        finalChance = Math.min(0.95, finalChance + 0.10);
+    }
+    
+    const isSold = Math.random() < finalChance;
+    
+    console.log('Параметры продажи:', {
+        nftName: nft?.name,
+        askingPrice,
+        marketPrice,
+        priceMultiplier: priceMultiplier.toFixed(2),
+        failedCount,
+        baseChance: Math.round(baseChance * 100) + '%',
+        pricePenalty: Math.round(pricePenalty * 100) + '%',
+        priceBonus: Math.round(priceBonus * 100) + '%',
+        finalChance: Math.round(finalChance * 100) + '%',
+        isSold,
+        doubleLuckMode: systemSettings.doubleLuckMode
+    });
+    
+    // ... остальная часть функции остается без изменений ...
+    // (та же логика обработки продажи/непродажи)
+    
+    if (isSold) {
+        // NFT ПРОДАНО УСПЕШНО!
+        // Сбрасываем счетчик неудач
+        if (state.fragment.failedSales) {
+            delete state.fragment.failedSales[nftId];
+        }
+        
+        // Добавляем деньги продавцу (с комиссией 10%)
+        const sellerProfit = Math.floor(askingPrice * 0.9);
+        state.balances.STARS += sellerProfit;
+        
+        // Добавляем NFT на рынок для покупки другими игроками
+        state.fragment.marketNFTs.push({
+            nftId: nftId,
+            price: askingPrice,
+            upgrade: saleData.upgrade,
+            seller: saleData.seller,
+            saleTime: new Date().toLocaleString('ru-RU')
+        });
+        
+        // Добавляем в историю транзакций
+        if (nft) {
+            addTransaction('fragment_nft_sell', `NFT ${nft.name}`, sellerProfit, null, 'STARS');
+        }
+        
+        // Показываем сообщение с учетом цены
+        let priceMessage = '';
+        if (priceMultiplier >= 1.6) {
+            priceMessage = ' 🎉 Несмотря на высокую цену!';
+        } else if (priceMultiplier < 1.0) {
+            priceMessage = ' 🎉 Выгодная цена помогла продать быстро!';
+        }
+        
+        showNotification(`🎉 NFT "${nft?.name || 'Неизвестный'}" ПРОДАН за ${formatNumber(askingPrice)} STARS!${priceMessage} Вы получили ${formatNumber(sellerProfit)} STARS`, 'success');
+        
+    } else {
+        // NFT НЕ ПРОДАНО
+        // Увеличиваем счетчик неудачных продаж
+        if (!state.fragment.failedSales) {
+            state.fragment.failedSales = {};
+        }
+        
+        state.fragment.failedSales[nftId] = (state.fragment.failedSales[nftId] || 0) + 1;
+        const newFailedCount = state.fragment.failedSales[nftId];
+        
+        console.log('Неудачная продажа. Новый счетчик:', newFailedCount);
+        
+        // Показываем сообщение с учетом цены
+        let priceReason = '';
+        if (priceMultiplier >= 1.6) {
+            priceReason = ' Цена слишком высокая!';
+        } else if (priceMultiplier >= 1.4) {
+            priceReason = ' Цена высокая для рынка.';
+        }
+        
+        if (newFailedCount >= 3) {
+            // 3 НЕУДАЧНЫЕ ПОПЫТКИ - NFT СГОРАЕТ!
+            showNotification(`🔥 NFT "${nft?.name || 'Неизвестный'}" СГОРЕЛ после 3 неудачных попыток продажи!${priceReason}`, 'error');
+            
+            // Удаляем счетчик неудач
+            delete state.fragment.failedSales[nftId];
+            
+            // NFT сгорает - ничего не возвращаем
+            
+        } else if (newFailedCount >= 2) {
+            // 2 НЕУДАЧНЫЕ ПОПЫТКИ - ВОЗВРАЩАЕМ НО С ПРЕДУПРЕЖДЕНИЕМ
+            if (nft) {
+                nft.owned++;
+                nft.upgraded.unshift(saleData.upgrade);
+            }
+            
+            showNotification(`⚠️ NFT "${nft?.name || 'Неизвестный'}" не продан!${priceReason} Это 2-я неудача. Следующая неудача приведет к сжиганию NFT!`, 'warning');
+            
+        } else {
+            // 1 НЕУДАЧНАЯ ПОПЫТКА - ПРОСТО ВОЗВРАЩАЕМ
+            if (nft) {
+                nft.owned++;
+                nft.upgraded.unshift(saleData.upgrade);
+            }
+            
+            showNotification(`😔 NFT "${nft?.name || 'Неизвестный'}" не продан.${priceReason} Попробуйте снизить цену!`, 'info');
+        }
+    }
+    
+    // Удаляем из списка продающихся В ЛЮБОМ СЛУЧАЕ
+    delete state.fragment.sellingNFTs[nftId];
+    
+    // Сохраняем данные
+    saveFragmentData();
+    saveUserData();
+    
+    // Обновляем UI
+    updateFragmentUI();
+    updateUI();
+}
+
+// Запуск таймера продажи NFT
+function startNFTSaleTimer(nftId, askingPrice) {
+    const saleData = state.fragment.sellingNFTs[nftId];
+    if (!saleData) return;
+    
+    const saleTimeout = setTimeout(() => {
+        processNFTSaleResult(nftId, askingPrice);
+    }, 120000); // 2 минуты
+    
+    // Сохраняем timeout ID
+    saleData.timeoutId = saleTimeout;
+    state.fragment.sellingNFTs[nftId] = saleData;
+}
+
+// Обработка результата продажи NFT
+// Обработка результата продажи NFT - ПОЛНОСТЬЮ ПЕРЕПИСАНА С СИСТЕМОЙ СЖИГАНИЯ
+// Обработка результата продажи NFT - ИСПРАВЛЕННАЯ ВЕРСИЯ
+
+
+// Отмена продажи NFT
+// Отмена продажи NFT - ОБНОВЛЕННАЯ ВЕРСИЯ
+// Отмена продажи NFT - ОБНОВЛЕННАЯ ВЕРСИЯ
+function cancelNFTSale(nftId) {
+    const saleData = state.fragment.sellingNFTs[nftId];
+    if (!saleData) return;
+    
+    const nft = findNFTById(nftId);
+    
+    showConfirmModal(
+        `Отменить продажу NFT "${nft?.name || 'Неизвестный'}"?`,
+        () => {
+            // Возвращаем NFT владельцу
+            if (nft) {
+                nft.owned++;
+                nft.upgraded.unshift(saleData.upgrade);
+            }
+            
+            // Сбрасываем счетчик неудач при добровольной отмене
+            if (state.fragment.failedSales) {
+                delete state.fragment.failedSales[nftId];
+            }
+            
+            // Очищаем таймер
+            if (saleData.timeoutId) {
+                clearTimeout(saleData.timeoutId);
+            }
+            
+            // Удаляем из списка продающихся
+            delete state.fragment.sellingNFTs[nftId];
+            
+            // Сохраняем данные
+            saveFragmentData();
+            saveUserData();
+            
+            // Обновляем UI
+            updateFragmentUI();
+            updateUI();
+            
+            showNotification('Продажа NFT отменена. Счетчик неудач сброшен.', 'info');
+        }
+    );
+}
+// Форматирование оставшегося времени
+function formatTimeRemaining(startTime) {
+    const now = Date.now();
+    const timePassed = now - startTime;
+    const timeRemaining = Math.max(0, 120000 - timePassed);
+    
+    const minutes = Math.floor(timeRemaining / 60000);
+    const seconds = Math.floor((timeRemaining % 60000) / 1000);
+    
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+// Очистка устаревших продаж при загрузке
+function cleanupOldSales() {
+    const now = Date.now();
+    const twoMinutes = 2 * 60 * 1000;
+    
+    for (const nftId in state.fragment.sellingNFTs) {
+        const saleData = state.fragment.sellingNFTs[nftId];
+        if (saleData.startTime && (now - saleData.startTime > twoMinutes)) {
+            console.log('Очистка устаревшей продажи NFT ID:', nftId);
+            
+            // Обрабатываем как неудачную продажу
+            processNFTSaleResult(parseInt(nftId), saleData.askingPrice);
+        }
+    }
+}
+// Функция для валидации и исправления балансов
+function validateAndFixBalances() {
+    let fixed = false;
+    
+    for (const currency in state.balances) {
+        if (state.balances[currency] < 0) {
+            console.warn(`Исправляю отрицательный баланс ${currency}: было ${state.balances[currency]}`);
+            state.balances[currency] = 0;
+            fixed = true;
+        }
+        
+        // Округляем до 8 знаков для избежания погрешности
+        state.balances[currency] = parseFloat(state.balances[currency].toFixed(8));
+    }
+    
+    if (fixed) {
+        saveUserData();
+        updateUI();
+        console.log('Балансы проверены и исправлены');
+    }
+}
+
+// Запускаем проверку каждые 30 секунд
+setInterval(validateAndFixBalances, 30000);
     </script>
 </body>
 </html>
